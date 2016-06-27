@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html >
   <head>
     <meta charset="UTF-8">
-    <title>Simple HTML & CSS Login Form</title>
+    <title>LOGIN|askANDanswer|</title>
     
     
     
@@ -20,11 +20,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </head>
 
   <body>
-<div id="sexydiv">
+
+<div id="main_div">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,600' rel='stylesheet' type='text/css'>
 
 <div class="box">
-<form method="post" action="http://www.askandanswer.com/index.php/login/login_call" id="signin_form" >
+<form action="http://www.askandanswer.com/index.php/login/homepage" id="signin_form" >
 
 <h1>Sign In</h1>
 
@@ -70,8 +71,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     
     
-  </div> 
-  </div> 
+
+</div>
+  
+  
   </body>
   
 </html>

@@ -29,6 +29,8 @@ class User_Model extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
+		
+
 	}
 
 	/*
@@ -266,6 +268,7 @@ class User_Model extends CI_Model
 				);
 
 			$this->setUserData($temp_data);
+
 			return 1;
 		}
 		else
@@ -335,26 +338,26 @@ public function check()
 		$user_data=$this->getUserData();
 
 		var_dump($user_data);
-		$query="select * from user_profile order by u_id DESC  LIMIT 1";
-		$u_id=0;
+		// $query="select * from user_profile order by u_id DESC  LIMIT 1";
+		// $u_id=0;
 
-		$execute= $this->db->query($query);
-		if($execute->num_rows() > 0){
-			$row=$execute->row();
-			$u_id=($row->u_id)+1;
+		// $execute= $this->db->query($query);
+		// if($execute->num_rows() > 0){
+		// 	$row=$execute->row();
+		// 	$u_id=($row->u_id)+1;
 
-		}
-		else
-		{
-			$u_id=1;
-		}
+		// }
+		// else
+		// {
+		// 	$u_id=1;
+		// }
 
 		
 		$pass= md5($user_data['pass']);
 		$date = date('Y-m-d H:i:s');
 		
 
-		$this->profile_url='profile_'.$u_id;
+		//$this->profile_url='profile_'.$u_id;
 
 		$user_profile_data=array(
 			'user_name' => $user_data['userid'],
@@ -362,13 +365,20 @@ public function check()
 			'about'=> $user_data['about_me'],
 			'first_name'=> $user_data['f_name'],
 			'last_name'=> $user_data['l_name'],
-			'profile_pic_url'=> $this->profile_url,
+			'profile_pic_url'=> 'default',
 			'registration_date'=> $date,
 			'pass_hash' => $pass
 			);
 
 		if($this->db->insert('user_profile', $user_profile_data))
 		{
+			$query="select * from user_profile where user_name='".$user_data['userid']."'";
+			$execute= $this->db->query($query);
+			$row=$execute->row();
+			$this->profile_url='profile_'.$row->u_id;
+			$user_profile_data['profile_pic_url']=$this->profile_url;
+			$query2="update user_profile set profile_pic_url='".$this->profile_url."' where user_name='".$user_profile_data['user_name']."'";
+			$this->db->query($query2);
 			$this->setUserData($user_profile_data);
 
 			$url=$this->generate_activation_url();

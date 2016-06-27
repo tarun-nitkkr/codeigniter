@@ -18,7 +18,7 @@ function field_focus(field, value)
 
 //Fade in dashboard box
 $(document).ready(function(){
-    $('#signup_form').hide();
+   // $('#ask_form').hide();
    $('#emailid_label').hide();
    $('#username_label').hide();
     $('.box').hide().fadeIn(1000);
@@ -49,16 +49,10 @@ $("#submit_button").click(function(){
        //if( response.indexOf('result') > -1 )
        //   console.log("result not empty");
        //console.log(response.result);
-       if(response.result!='1')
-        $("#wrong_label").html("Invalid username/password combination!");
-          //console.log(response);
-       else
-       {
-        //$("#sexydiv").html(response.result);
-        //$("#signin_form").submit();
-        window.location.replace('http://www.askandanswer.com/index.php/login/homepage');
-       }   
-        
+        //$("#wrong_label").html(response.result
+          console.log(response);
+
+        $("#sexydiv").html(response.result);
     }
 
   });
