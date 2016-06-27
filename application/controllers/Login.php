@@ -453,31 +453,87 @@ class Login extends CI_Controller {
 	
 
 
-	// public function tag()
-	// {
-	// 	$tag_name = $this->input->post("tag_name");
-	// 	$this->load->model("Tag_model");
-	// 	$model = new Tag_model;
-	// 	$tag_data = Tag_model->get_tag_detail($tag_name);
+	public function tag()
+	{
+		$tag_name = $this->input->post("tag_name");
+		$this->load->model("Tag_model");
+		$model = new Tag_model;
+		$tag_data = Tag_model->get_tag_detail($tag_name);
 
-	// 	//getting tag details
+		//getting tag details
 
-	// 	$tag_id = $model->get_tag_id();
-	// 	$tag_description = $model->get_tag_description();
-	// 	$tag_followers = $model->get_tag_followers();
-	// 	$this->load->model("Question_model");
-	// 	$model= new Question_model;
-	// 	$list_questions = $model->get_list_of_questions();
-	// 	$tag_data = array('tag_name'=>$tag_name,
-	// 		'tag_id'=>$tag_id,
-	// 		'tag_description'=>$tag_description,
-	// 		'tag_followers'=>$tag_followers,
-	// 		'list_questions'=>$list_questions);
+		$tag_id = $model->get_tag_id();
+		$tag_description = $model->get_tag_description();
+		$tag_followers = $model->get_tag_followers();
+		$this->load->model("Question_model");
+		$model= new Question_model;
+		$list_questions = $model->get_list_of_questions();
+		$tag_data = array('tag_name'=>$tag_name,
+			'tag_id'=>$tag_id,
+			'tag_description'=>$tag_description,
+			'tag_followers'=>$tag_followers,
+			'list_questions'=>$list_questions);
 
-	// 	$this->load->view("Tag_view",$tag_data);
+		$this->load->view("Tag_view",$tag_data);
 
 
-	// }
+	}
+//Question Detail Page __F
+
+	public function question_detail()
+	{
+		$this->load->model('Question_model');
+		$qmodel = new Question_model;
+
+		//$q_id need to have
+		$flag = $qmodel->get_question_detail($q_id);
+		if($flag)
+		{
+		$question_data= $qmodel->get_question_data();
+		// $q_title = $qmodel->get_question_title();
+		// $q_data = $qmodel->get_question_data();
+		// $no_of_likes = $qmodel->get_likes();
+		// $q_created_date = $qmodel->get_q_create_date();
+		// $q_modified_date = $qmodel->get_q_modified_date();
+	}
+	else
+	{
+		echo "Error in reading question details\n."
+	}
+	$this->load->model('Answer_model');
+	$amodel = new Answer_model;
+
+	$flag = $amodel->get_answers($q_id);
+	if($flag)
+	{
+		// $a_id = $amodel->get_answer_id();
+		// $a_data = $amodel->get_answer_data();
+		// $a_upvotes = $amodel->get_answer_upvote();
+		// $a_created_date = $amodel->get_a_created_date();
+		// $a_modified_date = $amodel->get_a_modified_date();
+		// $u_id = $amodel->get_answers_user();
+		$answer_data = $amodel->get_answer_data();//ans[a_id][u_id][a_data][upvotes][c_date][m_date]
+	}
+	else
+	{
+		echo "Error in Answers reading detail"
+	}
+	$model->getUserModel();
+	$username = $model->getUsernameForQuestionPage($question_data['u_id']);
+
+	$q_data = array('q_id'=>$q_id,
+		'user_name'=>$username,
+		'u_id'=>$question_data['u_id'],
+		'q_title'=>$question_data['q_title'],
+		'q_data'=>$question_data['q_data'],
+		'no_of_likes'=>$question_data['no_of_likes'],
+		'q_create_date'=>$question_data['q_create_date'],
+		'q_modified_date'=>$question_data['q_modified_date'],
+		'q_num_answer'=>$question_data['q_num_answer'],
+		'answer_data'=>$answer_data);
+	$this->load->view('Question_view',$q_data);
+
+	}
 	
 
 
