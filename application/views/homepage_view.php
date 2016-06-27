@@ -105,18 +105,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <!-- <li><a href="#">Menu 2</a></li>
   <li><a href="#">Menu 3</a></li> -->
 </ul>
-<div class="panel panel-default">
-  <div class="panel-heading">Panel heading</div>
-  <div class="panel-body">Panel Content</div>
-  <div class="panel-footer">Panel Footer</div>
-</div>
-<br>
 
-<div class="panel panel-default">
-  <div class="panel-heading">Panel heading</div>
+<table>
+  
+  <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
   <div class="panel-body">Panel Content</div>
   <div class="panel-footer">Panel Footer</div>
 </div>
+  </tr>
+  <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
+  <div class="panel-body">Panel Content</div>
+  <div class="panel-footer">Panel Footer</div>
+</div>
+  </tr>
+  <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
+  <div class="panel-body">Panel Content</div>
+  <div class="panel-footer">Panel Footer</div>
+</div>
+  </tr>
+  <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
+  <div class="panel-body">Panel Content</div>
+  <div class="panel-footer">Panel Footer</div>
+</div>
+  </tr>
+</table>
+
+
 
 <ul class="pagination">
   <li class="active"><a href="#">1</a></li>
