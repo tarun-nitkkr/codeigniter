@@ -1,0 +1,15 @@
+application/cache/
+application/config/
+application/core/
+application/helpers/
+application/hooks/
+application/language/
+application/libraries/
+application/logs/
+application/third_party/
+application/index.html
+signup_template/
+system/
+uploads/
+index.php
+
