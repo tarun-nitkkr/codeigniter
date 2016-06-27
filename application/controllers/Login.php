@@ -25,6 +25,7 @@ class Login extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		session_start();
 		$this->load->model('user_model');
 		$this->model= new user_model;
 
@@ -69,20 +70,23 @@ class Login extends CI_Controller {
 		//var_dump($data);
 		
 
-		var_dump($data);
+		//var_dump($data);
 		$model= $this->getUserModel();
 
 		if($model->check_cookie($data))
 		{
 			if($model->direct_login($user_name))
 			{
-				echo "direct login";
-				var_dump($model->getUserData());	
+				$data=$model->getUserData();
+				$_SESSION['user_data']=$data;
+				//echo "direct login";
+				$this->load->view('homepage_view');	
 			}
 			
 		}
-		else{
-		$this->load->view('login_view');
+		else
+		{
+		$this->load->view('login_view_css');
 		}
 		//var_dump($user_cookie);
 
@@ -158,7 +162,9 @@ class Login extends CI_Controller {
 			$user_data=$model->getUserData();
 			if($user_data['isactivated'])
 				{
-
+					$_SESSION['user_data']=$user_data;
+					// $_SESSION['user_id']=$user_data['u_id'];
+					// $_SESSION['profile_url']=$user_data['pic_url'];
 					$cookie_id=$model->set_cookie($user_data['user_name']);
 					if(!$cookie_id)
 					{
@@ -172,17 +178,17 @@ class Login extends CI_Controller {
 					$cookie = array(
    					'name'   => 'askandanswer_user_cookie',
       				'value'  => $cookie_value,
-       				'expire' => '50',
+       				'expire' => '10',
     				'domain' => '.askandanswer.com',
     				'path'   => '/'
     				);
 					$this->input->set_cookie($cookie);
-
-					$array=array('result'=> $user_data['user_name']);
+					
+					//$array=array('result'=> $user_data['user_name']);
 					//echo json_encode($array);
 					//sleep(2);
 					//$string=$this->load->view("register_view");
-					//$array=array('result'=> $this->load->view("register_view",'',true));
+					$array=array('result'=> '1');
 					echo json_encode($array);
 				}
 
@@ -408,7 +414,7 @@ class Login extends CI_Controller {
 
 			//NOW SEND THE EMAIL TO REGISTERED EMAIL ID
 			//$model->generate_activation_url($input_data);
-			$url=$model->generate_activation_url($input_data);
+			$url=$model->generate_activation_url_pass_reset($input_data);
 			$f_name = $model->getFirstName();
 			$message="Kindly reset your ASKandANSWER password by clicking on this link->".$url;
 			$title="ASKandANSWER- Reset Password";
@@ -473,4 +479,32 @@ class Login extends CI_Controller {
 
 	// }
 	
+
+
+
+	//for loading homepage view
+	public function homepage()
+	{
+		$this->index();
+		//$this->load->view('homepage_view');
+	}
+
+	//to logout the user
+	public function logout()
+	{
+		$cookie = array(
+   					'name'   => 'askandanswer_user_cookie',
+      				'value'  => '',
+       				'expire' => '10',
+    				'domain' => '.askandanswer.com',
+    				'path'   => '/'
+    				);
+		$this->input->set_cookie($cookie);
+
+		session_unset();
+		session_destroy();
+		$this->load->view('login_view_css');
+	}
+
+
 }
