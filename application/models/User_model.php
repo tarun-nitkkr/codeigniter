@@ -525,6 +525,21 @@ public function check()
 			return 0;
 		}
 	}
+	//code for getting user name for question detail page __F
+
+	public function getUsernameForQuestionPage($u_id)
+	{
+		$query = "select user_name from user_profile where u_id='".$u_id."'";
+		$execute = $this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+			return $row->user_name;
+		}
+		else{
+			echo "Error in reading username\n";
+			return 0;
+		}
+	}
 
 }
 
