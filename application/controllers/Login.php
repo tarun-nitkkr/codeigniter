@@ -357,4 +357,120 @@ class Login extends CI_Controller {
 
 
 	}
+
+
+	//My code Farheen
+
+	public function reset_password()
+	{
+		$data=array(
+			'code'=> $this->input->get('code'),
+			'emailid'=> $this->input->get('email_id')
+			
+			);
+		//$this->load->model('Forgot_pass_model');
+
+
+		$model= $this->getUserModel();
+
+		$flag=$model->verify_hash($data);
+
+		if($flag)
+		{
+			$this->load->view('Reset_Password_View',$data);
+		}
+		else
+		{
+			echo "there has been a error in validating your account";
+		}
+
+
+	}
+
+	
+	public function forget_password_load_view()
+	{
+		// $error='hello';
+		$this->load->view('forgot_pass_view');
+	}
+
+	public function forgot_password()
+	{
+		$input_data = $this->input->post('emailid');
+
+		//$this->load->model('Forgot_pass_model');
+
+		$model= $this->getUserModel();
+		//$model->setUserData($input_data);
+
+		if($model->email_exists($input_data))
+		{
+
+			//NOW SEND THE EMAIL TO REGISTERED EMAIL ID
+			//$model->generate_activation_url($input_data);
+			$url=$model->generate_activation_url($input_data);
+			$f_name = $model->getFirstName();
+			$message="Kindly reset your ASKandANSWER password by clicking on this link->".$url;
+			$title="ASKandANSWER- Reset Password";
+			$this->send_mail($input_data, $f_name, $title, $message);
+
+			echo "Reset Password Email sent.";
+			
+				echo "Click the link sent to you in your registered email id to reset the Password.!!\n";
+				//sleep(5);
+				//$this->load->view('login_view');
+		}
+
+	}
+
+
+
+	public function enter_new_pass()
+	{
+		//$this->load->model('Forgot_pass_model');
+		$model= $this->getUserModel();
+		//$user_id = $model->getUserId();
+		$newpassword = $this->input->post('pass');
+		echo "Here is new  password set\n";
+		$email_id = $this->input->post('email_id');
+		echo $email_id;
+		echo "Password=";
+		echo $newpassword;
+		//echo "$uu_id"+"\n";
+		$flag = $model->set_new_password($newpassword,$email_id);
+		if($flag)
+			echo "Password Reset Successfully!!";
+		else
+			echo "Password reset Failed!!";
+
+	}
+	
+
+
+	// public function tag()
+	// {
+	// 	$tag_name = $this->input->post("tag_name");
+	// 	$this->load->model("Tag_model");
+	// 	$model = new Tag_model;
+	// 	$tag_data = Tag_model->get_tag_detail($tag_name);
+
+	// 	//getting tag details
+
+	// 	$tag_id = $model->get_tag_id();
+	// 	$tag_description = $model->get_tag_description();
+	// 	$tag_followers = $model->get_tag_followers();
+	// 	$this->load->model("Question_model");
+	// 	$model= new Question_model;
+	// 	$list_questions = $model->get_list_of_questions();
+	// 	$tag_data = array('tag_name'=>$tag_name,
+	// 		'tag_id'=>$tag_id,
+	// 		'tag_description'=>$tag_description,
+	// 		'tag_followers'=>$tag_followers,
+	// 		'list_questions'=>$list_questions);
+
+	// 	$this->load->view("Tag_view",$tag_data);
+
+
+	// }
+	
 }

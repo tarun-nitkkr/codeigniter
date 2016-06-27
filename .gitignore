@@ -8,8 +8,8 @@ application/libraries/
 application/logs/
 application/third_party/
 application/index.html
-signup_template/
+application/registration.js
 system/
 uploads/
 index.php
-
+user_guide/

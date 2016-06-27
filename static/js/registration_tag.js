@@ -1,40 +1,3 @@
-
-
-
-function validate_username(x)
-{
-	var error = "";
-	var illegalChars = /[\W]/;
-
-	if(x.value=="")
-	{
-		x.style.background='Yellow';
-		error = "You didn't enter a user name.\n";
-		alert(error);
-		return false;
-	}
-	else if(((x.value).length < 5) || ((x.value).length >  15))
-	{
-		x.style.background = 'Yellow';
-		error = "The username is the wrong length.\n";
-		alert(error);
-		return false;
-	}
-	else if(illegalChars.test(x.value))
-	{
-		x.style.background = "Yellow";
-		error = "The username contains illegal Characters.\n";
-		alert(error);
-		return false;
-
-	}
-	else
-	{
-		x.style.background = "White";
-	}
-	return true;
-}
-
 function validate_email(x)
 {
 	var error = "";
@@ -126,20 +89,7 @@ function validate_repass(y,y1)
 
 
 
-function phonenumber(n)  
-{  
-  var phoneno = /^\d{10}$/;  
-  if(n.value.match(phoneno))
-   {  
-   		return true;  
-   }  
-    
-   else  
-        {  
-        alert("Wrong Phone Number");  
-        return false;  
-        }  
-}
+
 
 
 
@@ -151,22 +101,6 @@ function form_validate()
 	//alert("inside");
 	//var a = b = c = d = e =b1=f=true;
 
-	var x = document.getElementById('username');
-	
-	if(x!=null){
-
-	if((x.value).indexOf('@') > -1)
-	{
-		//alert("A");
-		if(!validate_email(x))
-			return false;
-	}
-	else
-	{
-		if(!validate_username(x))
-			return false
-	}
-}
 
 	var y = document.getElementById('password');
 	if(y!=null)
@@ -189,32 +123,15 @@ function form_validate()
 				return false;
 		}
 
-	var p = document.getElementById("phonenumber");
-	if(p!=null)
-	{
-		if(!validate_phone(p))
-			return false;
-	}
 
-	var q = document.getElementById("firstname");
-	if(q!=null)
-	{
-		if(!validate_username(q))
-			return false;
-}
 
-	var r = document.getElementById("lastname");
-	if(r!=null)
-	{
-		if(!validate_username(r))
-			return false;
-	}
+	
 
 	
 	
 		//alert("right");
-		document.getElementById("login_form").submit();
-		 document.getElementById("login_form").reset();
+		document.getElementById("tag_form").submit();
+		 document.getElementById("tag_form").reset();
 		return true;
 
 
