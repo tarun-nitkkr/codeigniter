@@ -2,6 +2,7 @@
 
 class Question_model extends CI_Model
 {
+	
 	private $q_id;
 	private $q_data;
 	function __construct()
@@ -18,7 +19,10 @@ class Question_model extends CI_Model
 	{
 		return $this->q_data;
 	}
-	public function get_question_detail($q_id);
+	
+
+
+	public function get_question_detail($q_id)
 	{
 		$query = "select * from question where q_id = '".$q_id."'";
 		$execute = $this->db->query($query);
@@ -72,4 +76,144 @@ class Question_model extends CI_Model
 				return 0;
 			}
 	}
+
+
+	public function get_recent_questions($data)
+	{
+		$query="SELECT Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id
+				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on
+				ORDER BY Q.q_id DESC
+				LIMIT ".$data['from'].",10";
+
+		$execute=$this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+			$data=array(
+				'q_id'=>$row->q_id,
+				'title'=> $row->q_title,
+				'no_ans'=> $row->no_of_answer,
+				'no_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'tag_csv'=> $row->tag_name
+
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		return 0;
+
+
+
+	}
+
+
+
+	public function get_followed_question($data, $user_id)
+	{
+
+
+
+		$query="SELECT Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
+				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id 
+				WHERE UT.u_id=".$user_id."
+				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
+				ORDER BY Q.q_id DESC 
+				LIMIT ".$data['from'].",10";
+        $execute=$this->db->query($query);
+        if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+			$data=array(
+				'q_id'=>$row->q_id,
+				'title'=> $row->q_title,
+				'no_ans'=> $row->no_of_answer,
+				'no_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'tag_csv'=> $row->tag_name
+
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		return 0;
+
+
+
+	}
+
+
+
+	public function user_interaction_details_db($user_id)
+	{
+		$query="select * from user_interaction_table where u_id=".(int)$user_id;
+		$execute=$this->db->query($query);
+		$row=$execute->row();
+		$data=array(
+			'no_ans'=> $row->no_of_answers,
+			'no_ques'=> $row->no_of_questions
+			);
+		return $data;
+	}
+
+
+	public function user_tag_relation_db($user_id)
+	{
+		$query='SELECT T.name FROM user_profile U JOIN user_tag_relation UT ON U.u_id=UT.u_id JOIN tags T ON T.tag_id=UT.tag_id WHERE U.u_id='.$user_id;
+		$execute=$this->db->query($query);
+		$set=array();
+		$i=0;
+		$csv='';
+		if($execute->num_rows()>0)
+		{
+			foreach ($execute->result() as $row) {
+				# code...
+				$csv=$csv.$row->name.',';
+				array_push($set, $row->name);
+				$i++;
+
+			}
+			$csv=chop($csv,',');
+			$result=array(
+				'set'=> $set,
+				'no'=> $i,
+				'csv'=> $csv
+				);
+			return $result;
+		}
+		return 0;
+
+		
+	}
+
 }

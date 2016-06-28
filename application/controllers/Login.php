@@ -458,7 +458,7 @@ class Login extends CI_Controller {
 		$tag_name = $this->input->post("tag_name");
 		$this->load->model("Tag_model");
 		$model = new Tag_model;
-		$tag_data = Tag_model->get_tag_detail($tag_name);
+		$tag_data = $model->get_tag_detail($tag_name);
 
 		//getting tag details
 
@@ -498,7 +498,7 @@ class Login extends CI_Controller {
 	}
 	else
 	{
-		echo "Error in reading question details\n."
+		echo "Error in reading question details\n.";
 	}
 	$this->load->model('Answer_model');
 	$amodel = new Answer_model;
@@ -516,7 +516,7 @@ class Login extends CI_Controller {
 	}
 	else
 	{
-		echo "Error in Answers reading detail"
+		echo "Error in Answers reading detail";
 	}
 	$model->getUserModel();
 	$username = $model->getUsernameForQuestionPage($question_data['u_id']);
