@@ -539,7 +539,8 @@ public function check()
 
 	public function getUsernameForQuestionPage($u_id)
 	{
-		$query = "select user_name from user_profile where u_id='".$u_id."'";
+		//echo "username="+$u_id;
+		$query = "select user_name from user_profile where u_id=".$u_id;
 		$execute = $this->db->query($query);
 		if($execute->num_rows()>0)
 		{

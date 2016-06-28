@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </head>
 
   <body>
-  <p>
+  
 
   <h>$q_id<br> $q_title</h>
   <br>
@@ -26,21 +26,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <br>
   <br>
   <br>
-  <p>
+  
   <?php
   $n = $q_num_answer;
   while($n>0)
   {
-  	<h>echo "a_id:"+$answer_data[$n][0]</h>
-  	<p><b>echo $answer_data[$n][1]</b></p>
-  	<p><b>echo $answer_data[$n][3]</b></p>
-  	<p><b>echo "Date::"+ $answer_data[$n][4]</b></p>
-  	<p></b>echo "Last Modified::" + $answer_data[$n][5]</b></p>
-  	<p>echo"Detailed::"<br> $answer_data[$n][2]</p>
+  	<h>echo "a_id:"+$answer_data[$n][0];</h>
+  	<p><b>echo "user:"+$answer_data[$n][2];</b></p>
+  	<p><b>echo "Upvotes:"+$answer_data[$n][4];</b></p>
+  	<p><b>echo "Date::"+ $answer_data[$n][5];</b></p>
+  	<p></b>echo "Last Modified::" + $answer_data[$n][6];</b></p>
+  	<p>echo"Detailed::"<br> $answer_data[$n][3];</p>
   	$n = $n - 1;
   }
-  </p>
- 
-  
+ 	
   </body>
-  </html>>
+  </html>

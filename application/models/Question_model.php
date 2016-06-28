@@ -18,24 +18,26 @@ class Question_model extends CI_Model
 	{
 		return $this->q_data;
 	}
-	public function get_question_detail($q_id);
+	public function get_question_detail($q_id)
 	{
-		$query = "select * from question where q_id = '".$q_id."'";
+		$query = "select * from question where q_id =".$q_id;
 		$execute = $this->db->query($query);
+
 		if($execute->num_rows()>0)
 		{
-			$q_data = array('u_id'=>$row->u_id,
+			$row=$execute->row();
+		$q_data = array('u_id'=>$row->q_id,
 		'q_title'=>$row->q_title,
 		'q_data'=>$row->q_data,
 		'no_of_likes'=>$row->no_of_likes,
-		'q_create_date'=>$row->create_on,
+		'q_create_date'=>$row->created_on,
 		'q_modified_date'=>$row->last_modified,
-		'q_num_answer'=>$row->no_of_answer);
+		'q_num_answer'=>$row->no_of_answer
+		);
 
 		$this->set_question_data($q_data);
 		return 1;
 		}
-
 		else
 		{
 			return 0;
