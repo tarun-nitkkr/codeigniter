@@ -15,16 +15,53 @@ function field_focus(field, value)
   }
 
 
-
+//var row_count=1;
 //Fade in dashboard box
 $(document).ready(function(){
-   // $('#ask_form').hide();
-   $('#emailid_label').hide();
-   $('#username_label').hide();
-    $('.box').hide().fadeIn(1000);
-    //$("#emailid_label").html("changed");
-    
+   
+   //$("#question_div").load("http://www.askandanswer.com/index.php/homepage/populate_question_recent");
+    var data={
+      type: 'recent',
+      from: 0
+    };
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
+      data: data,
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#question_div").html("<table>"+response+"</table>");
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
     });
+    
+
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/user_interaction_details",
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+         //console.log(response);
+
+        $("#no_ques").html(response.no_ques);
+        $("#no_ans").html(response.no_ans);
+        $("#no_tag").html(response.no_tag);
+        $("#followed_tags_tooltip").attr('title', response.tag_csv);
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
+    });
+    
+});
 
 // //Stop click event
 // $('#sign_in').click(function(event){
@@ -34,17 +71,17 @@ $(document).ready(function(){
 
 
 
-$("#submit_button").click(function(){
+$("#followed_tab").click(function(){
     //$("#wrong_label").text('hello');
     var data={
-      userid: $('#userid').val(),
-      pass: $('#pass').val()
+      type: 'followed',
+      from: 0
     };
     $.ajax({
-      url: "http://www.askandanswer.com/index.php/login/login_call",
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
       data: data,
-      dataType: "json",
-      type: "post",
+      dataType: "html",
+      type: "get",
       success: function(response){
        //if( response.indexOf('result') > -1 )
        //   console.log("result not empty");
@@ -52,91 +89,46 @@ $("#submit_button").click(function(){
         //$("#wrong_label").html(response.result
           console.log(response);
 
-        $("#sexydiv").html(response.result);
+        $("#question_div").html("<table>"+response+"</table>");
+        $("#recent_tab").attr('class', '');
+        $("#followed_tab").attr('class', 'active');
+
     }
 
   });
 });
 
 
-$("#signup_button").click(function() {
-  /* Act on the event */
-  $('#signin_form').hide();
-  $('#signup_form').fadeIn('slow');
-});
 
-
-$("#emailid").change(function() {
-  //console.log("selected");
-  //fire ajax for email check
-  var data={
-      data: $('#emailid').val(),
-      type: "emailid"
-     
+$("#recent_tab").click(function(){
+    //$("#wrong_label").text('hello');
+    var data={
+      type: 'recent',
+      from: 0
     };
     $.ajax({
-      url: "http://www.askandanswer.com/index.php/login/check_username",
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
       data: data,
-      dataType: "json",
-      type: "get",
+      type:"get",
+      dataType: "html",
       success: function(response){
-       //if( response.indexOf('result') > -1 )
-       //   console.log("result not empty");
-       //console.log(response.result);
-        //$("#wrong_label").html(response.result
-          //console.log(response.result);
+       
+         console.log(response);
 
-          
-          if(response.result !='0')
-          {
-
-            //$("#wrong_label").html(response.result);
-            $("#emailid_label").html(response.result);
-            $("#emailid_label").fadeOut(1000);
-          }
-          else
-          {
-            //$("#wrong_label").html(response.result);
-            $("#emailid_label").hide();
-          }
-        //$("#sexydiv").html(response.result).fadeIn('slow/400/fast');
+        $("#question_div").html("<table>"+response+"</table>");
+        $("#recent_tab").attr('class', 'active');
+        $("#followed_tab").attr('class', '');
     }
 
-  });
+    });
 });
 
-$("#reg_userid").change(function() {
-  //console.log("selected");
-  //fire ajax for username check
-  var data={
-      data: $('#reg_userid').val(),
-      type: "username"
-     
-    };
-    $.ajax({
-      url: "http://www.askandanswer.com/index.php/login/check_username",
-      data: data,
-      dataType: "json",
-      type: "get",
-      success: function(response){
-       //if( response.indexOf('result') > -1 )
-       //   console.log("result not empty");
-       //console.log(response.result);
-        //$("#wrong_label").html(response.result
-         //console.log(response.result);
-          if(response.result!='0')
-          {
-            //console.log(response.result);
 
-            $("#username_label").html(response.result);
-            $("#username_label").show();
-          }
-          else
-          {
-            $("#username_label").hide();
-          }
-        //$("#sexydiv").html(response.result).fadeIn('slow/400/fast');
-    }
 
-  });
-});
+
+function alpha(clicked_id)
+{
+  //var id=$(this).attr('id');
+  //$("#question_div").html(id);
+  //$("#question_div").html(clicked_id);
+}

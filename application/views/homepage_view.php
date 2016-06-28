@@ -48,9 +48,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="about_me">About Me:<?php echo $data['about']?></div>
 <div id="email_id">My Email-ID:<?php echo $data['email_id']?></div> -->
 
-<button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge">10 </span></button>
-<button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge">20 </span></button>
-<button type="button" class="btn btn-primary" width="100px">Followed Tags <span class="badge">10 </span></button>
+<button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button>
+<button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button>
+<button type="button" class="btn btn-primary" width="100px">Followed Tags <a href="" id="followed_tags_tooltip" data-toggle="tooltip" title="Hooray!"><span class="badge" id="no_tag">10 </span></a></button>
 <br>
 <br>
 <br>
@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div class="form-group">
     <label class="control-label col-sm-2" for="question-title">Question Title:</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="question_title" placeholder="Enter email">
+      <input type="email" class="form-control" id="question_title" placeholder="Question Title">
     </div>
   </div>
   <div class="form-group">
@@ -100,23 +100,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <br>
 <br>
 <ul class="nav nav-tabs">
-  <li class="active"><a href="#">Recent</a></li>
-  <li><a href="#">Followed</a></li>
+  <li class="active" id="recent_tab"><a >Recent</a></li>
+  <li id="followed_tab"><a >Followed</a></li>
   <!-- <li><a href="#">Menu 2</a></li>
   <li><a href="#">Menu 3</a></li> -->
 </ul>
-<div class="panel panel-default">
-  <div class="panel-heading">Panel heading</div>
-  <div class="panel-body">Panel Content</div>
-  <div class="panel-footer">Panel Footer</div>
-</div>
-<br>
 
-<div class="panel panel-default">
-  <div class="panel-heading">Panel heading</div>
+<div id="question_div">
+<table>
+  
+  <!-- <tr id"row_1">
+    <div class="panel panel-default">
+  <div class="panel-heading" id="row_header_1">Panel heading</div>
+  <div class="panel-body" id="row_body_1">Panel Content</div>
+  <div class="panel-footer" id="row_footer_1">Panel Footer</div>
+</div>
+  </tr> -->
+  <!-- <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
   <div class="panel-body">Panel Content</div>
   <div class="panel-footer">Panel Footer</div>
 </div>
+  </tr>
+  <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
+  <div class="panel-body">Panel Content</div>
+  <div class="panel-footer">Panel Footer</div>
+</div>
+  </tr>
+  <tr>
+    <div class="panel panel-default">
+  <div class="panel-heading" >Panel heading</div>
+  <div class="panel-body">Panel Content</div>
+  <div class="panel-footer">Panel Footer</div>
+</div>
+  </tr> -->
+  
+</table>
+</div>
+
 
 <ul class="pagination">
   <li class="active"><a href="#">1</a></li>
