@@ -21,19 +21,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </p>
     <br>
    <?php
-   $no_of_questions  = count($list_questions);
-   echo "<ul>";
-   ?>
- <?php for ($row = 0; $row < $no_of_questions; $row++) {
-  ?>
+   $no_of_questions  = sizeof($list_questions);
+   echo "No. of questions=".$no_of_questions;
+   echo "<br>";
+      
+     //  $a = '<a href="http://www.askandanswer.com/index.php/login/question_detail">answer1</a>';
+    //echo $a;
+  
 
-   // \\echo<<<HTML
-    echo '<li><a href="'.'http://www.askandanswer.com/index.php/login/question_detail">'."Hello WORDDDDDDDD</a></li>";
-    <a href="http://www.askandanswer.com/index.php/login/question_detail">answer1</a>
-  
-  }
-  
-  echo "</ul>";
+  //echo $list_questions[0][0].": In stock: ".$list_questions[0][1].".<br>";
+   // for ($row = 0; $row < $no_of_questions; $row++) {
+    //oreach($foo as $key1 => $val1) 
+    foreach($list_questions as $key1=> $val)
+    {
+      $l = $val['0'];
+      $k = $val['1'];
+    //  echo $l;
+
+      //echo "Q_id=".$list_questions[0][0].": Q_title: ".$list_questions[0][1].".<br>";
+
+     echo '<a href="http://www.tutorialspoint.com" target="_self">q_id::'.$l."Q_title::".$k."</a>";
+     echo "<br>";
+
+
+    }
 
 ?>
         

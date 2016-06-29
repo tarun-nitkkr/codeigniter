@@ -59,11 +59,53 @@ class Question_model extends CI_Model
 		$i = 0;
 		echo "Qmodel Tag id=" + $tag_id+"\n";
 	//	$query = "select q_id from question_tag where tag_id='".$tag_id."'";
-		$query = "select question.q_id,question.q_title from question_tag,question where question_tag.tag_id = '".$tag_id."' and question_tag.q_id = question.q_id";
+		$query = "select question.q_id,question.u_id,question.q_data,question.q_title,question.no_of_answer,question.no_of_likes,question.created_on from question_tag,question where question_tag.tag_id = '".$tag_id."' and question_tag.q_id = question.q_id";
 
-		$execute = $this->db->query($query);
+		//$execute = $this->db->query($query);
 		//$row = $execute->row();
 		//echo "Check::table\n";
+		//print_r($execute);
+
+
+
+
+
+		$execute=$this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+			$data=array(
+				'q_id'=>$row->q_id,
+				'u_id'=>$row->u_id,
+				'q_data'=>$row->q_data,
+				'q_title'=> $row->q_title,
+				'no_of_answer'=> $row->no_of_answer,
+				'no_of_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on
+			
+
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+
+		/*
+
 		if($execute->num_rows()>0)
 		{
 			foreach ($execute->result() as $row) 
@@ -77,17 +119,28 @@ class Question_model extends CI_Model
 				//echo "inside array\n";
 				//$newrow = $newexecute->row();
 				$list_questions[$i][0] = $row->q_id;
-				$list_questions[$i][1] = $row->q_title;
+				$list_questions[$i][1] = $row->u_id;
+				$list_questions[$i][2] = $row->q_data;
+				$list_questions[$i][3] = $row->q_title;
+				$list_questions[$i][4] = $row->no_of_answer;
+				$list_questions[$i][5] = $row->no_of_likes;
+				$list_questions[$i][6] = $row->created_on;
+				//echo $list_questions[$i][1];
+				//echo "\n";	
 			//}
 				$i = $i+1;
 			}
 
-			//echo "This is the tag array\n";
-			echo "<pre>";
-			print_r($list_questions);
-			echo "</pre>";
+
+			// echo "This is the tag array\n";
+			// echo "<pre>";
+			// print_r($list_questions);
+			// echo "</pre>";
+			return $list_questions;
+			
 			
 		}
+		*/
 		else
 			{
 				echo "error in listing all questions of particular Tag\n";

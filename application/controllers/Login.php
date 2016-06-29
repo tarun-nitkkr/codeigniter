@@ -456,6 +456,16 @@ class Login extends CI_Controller {
 	
 
 
+
+
+
+	
+
+
+
+
+
+/*
 	public function tag()
 	{
 		//$tag_name = $this->input->post("tag_name");
@@ -479,10 +489,11 @@ class Login extends CI_Controller {
 			'tag_followers'=>$tag_followers,
 			'list_questions'=>$list_questions);
 
-		$this->load->view("Tag_view",$tag_data);
+			$this->load->view("Tag_view",$tag_data);
 
 
 	}
+	*/
 //Question Detail Page __F
 
 	public function question_detail()
@@ -549,7 +560,12 @@ class Login extends CI_Controller {
 	
 
 
+//Post Question
 
+	public function post_question()
+	{
+		$this->load->view('Post_question_view');
+	}
 	//for loading homepage view
 	public function homepage()
 	{
