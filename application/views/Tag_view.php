@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    echo "<ul>";
   for ($row = 0; $row < $no_of_questoins; $row++) {
 
-    echo "<li><a href=".$list_questions[$row][1].">".$list_questions[$row][2]."</a></li>"
+    echo "<li><a href=".$list_questions[$row][0].">".$list_questions[$row][1]."</a></li>"
 
   }
   echo "</ul>";
