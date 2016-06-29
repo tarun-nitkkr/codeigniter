@@ -57,29 +57,36 @@ class Question_model extends CI_Model
 	public function get_list_of_questions($tag_id)
 	{
 		$i = 0;
-		//$query = "select q_id from question_tag where tag_id='".$tag_id."'";
-		$query = "select q_title from question where q_id IN (select q_id from question_tag where tag_id='".$tag_id."')";
+		echo "Qmodel Tag id=" + $tag_id+"\n";
+	//	$query = "select q_id from question_tag where tag_id='".$tag_id."'";
+		$query = "select question.q_id,question.q_title from question_tag,question where question_tag.tag_id = '".$tag_id."' and question_tag.q_id = question.q_id";
 
 		$execute = $this->db->query($query);
-		$row = $execute->row();
-		echo "table";
+		//$row = $execute->row();
+		//echo "Check::table\n";
 		if($execute->num_rows()>0)
 		{
-			while($execute->num_rows()>0)
+			foreach ($execute->result() as $row) 
 			{
-				$q_id = $row->q_id;
-				$new_query = "select q_title from question where q_id='".$q_id."'";
-				$newexecute = $this->db->query($new_query);
-				if($newexecute->num_rows>0)
-				{
-					echo "inside array\n";
-					$newrow = $newexecute->row();
-					$list_questions[$i][0] = $q_id;
-					$list_questions[$i][1] = $newrow->q_title;
-				}
+			
+				//$qq_id = $row->q_id;
+				//$new_query = "select q_title from question where q_id='".$qq_id."'";
+			//	$newexecute = $this->db->query($new_query);
+				//if($newexecute->num_rows>0)
+				//{
+				//echo "inside array\n";
+				//$newrow = $newexecute->row();
+				$list_questions[$i][0] = $row->q_id;
+				$list_questions[$i][1] = $row->q_title;
+			//}
 				$i = $i+1;
 			}
 
+			//echo "This is the tag array\n";
+			echo "<pre>";
+			print_r($list_questions);
+			echo "</pre>";
+			
 		}
 		else
 			{

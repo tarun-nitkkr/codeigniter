@@ -1,8 +1,11 @@
+
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
-
+//ini_set('max_execution_time', 0); 
+//ini_set('memory_limit','2048M');
 	/**
 	 * Index Page for this controller.
 	 *
@@ -456,19 +459,20 @@ class Login extends CI_Controller {
 	public function tag()
 	{
 		//$tag_name = $this->input->post("tag_name");
-		$tag_name = "Tobias";
+		$tag_name = 'Tobias';
 		$this->load->model("Tag_model");
-		$model = new Tag_model;
-		$tag_data = $model->get_tag_detail($tag_name);
+		$tmodel = new Tag_model;
+		$tag_data = $tmodel->get_tag_detail($tag_name);
 
 		//getting tag details
 
-		$tag_id = $model->get_tag_id();
-		$tag_description = $model->get_tag_description();
-		$tag_followers = $model->get_tag_followers();
+		$tag_id = $tmodel->get_tag_id();
+		//echo "Tag id=" + $tag_id;
+		$tag_description = $tmodel->get_tag_description();
+		$tag_followers = $tmodel->get_tag_followers();
 		$this->load->model("Question_model");
-		$model= new Question_model;
-		$list_questions = $model->get_list_of_questions($tag_id);
+		$qmodel= new Question_model;
+		$list_questions = $qmodel->get_list_of_questions($tag_id);
 		$tag_data = array('tag_name'=>$tag_name,
 			'tag_id'=>$tag_id,
 			'tag_description'=>$tag_description,

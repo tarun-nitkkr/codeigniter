@@ -55,10 +55,10 @@ class Answer_model extends CI_Model
 				$rown = $execute->result();
 				$user_name=$rown->user_name;
 			$data=array(
-				'a_id'=>$row->a_id;
+				'a_id'=>$row->a_id,
 				'q_id'=>$row->q_id,
 				'u_id'=>$row->$u_id,
-				'user_name'=>$user_name;
+				'user_name'=>$user_name,
 				'a_data'=> $row->a_data,
 				'upvotes'=> $row->upvotes,
 				'created_on'=> $row->created_on,

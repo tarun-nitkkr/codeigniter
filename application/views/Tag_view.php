@@ -7,29 +7,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <html >
   <head>
     <meta charset="UTF-8">
-    <title>Tag_Detail_<?php echo $tag_name;?>></title>
+    <title>Tag_Detail_<?php echo $tag_name;?></title>
     
   </head>
 
   <body>
 
-    <h>Tag Name ::$tag_name</h>
+    <h>Tag Name ::<?php echo $tag_name?></h>
     <br>
-    <h>Tag Id:: $tag_id</h>
+    <h>Tag Id:: <?php echo$tag_id?></h>
     <p>Tag Description::<br>
-    $tag_description
+    <?php echo$tag_description?>
     </p>
     <br>
    <?php
    $no_of_questions  = count($list_questions);
    echo "<ul>";
-  for ($row = 0; $row < $no_of_questoins; $row++) {
+   ?>
+ <?php for ($row = 0; $row < $no_of_questions; $row++) {
+  ?>
 
-    echo "<li><a href=".$list_questions[$row][0].">".$list_questions[$row][1]."</a></li>"
-
+   // \\echo<<<HTML
+    echo '<li><a href="'.'http://www.askandanswer.com/index.php/login/question_detail">'."Hello WORDDDDDDDD</a></li>";
+    <a href="http://www.askandanswer.com/index.php/login/question_detail">answer1</a>
+  
   }
+  
   echo "</ul>";
-}
+
 ?>
         
 
