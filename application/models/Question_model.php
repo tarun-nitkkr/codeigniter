@@ -83,7 +83,7 @@ class Question_model extends CI_Model
 
 	public function get_recent_questions($data)
 	{
-		$query="SELECT Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id
+		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id
 				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on
 				ORDER BY Q.q_id DESC
 				LIMIT ".$data['from'].",10";
@@ -100,6 +100,7 @@ class Question_model extends CI_Model
 			//$row=$execute->row();
 			$data=array(
 				'q_id'=>$row->q_id,
+				'user_name'=>$row->user_name,
 				'title'=> $row->q_title,
 				'no_ans'=> $row->no_of_answer,
 				'no_like'=>$row->no_of_likes,
@@ -132,8 +133,8 @@ class Question_model extends CI_Model
 
 
 
-		$query="SELECT Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
-				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id 
+		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
+				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
 				WHERE UT.u_id=".$user_id."
 				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
 				ORDER BY Q.q_id DESC 
@@ -150,6 +151,7 @@ class Question_model extends CI_Model
 			//$row=$execute->row();
 			$data=array(
 				'q_id'=>$row->q_id,
+				'user_name'=>$row->user_name,
 				'title'=> $row->q_title,
 				'no_ans'=> $row->no_of_answer,
 				'no_like'=>$row->no_of_likes,
@@ -219,4 +221,25 @@ class Question_model extends CI_Model
 		
 	}
 
+	public function get_q_data($q_id)
+	{
+		$query="SELECT UP.user_name,Q.q_id, Q.q_data, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id
+WHERE Q.q_id=".$q_id."
+GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on";
+		$execute=$this->db->query($query);
+		$row=$execute->row();
+		$data=array(
+				'q_id'=>$row->q_id,
+				'user_name'=>$row->user_name,
+				'title'=> $row->q_title,
+				'data'=>$row->q_data,
+				'no_ans'=> $row->no_of_answer,
+				'no_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'tag_csv'=> $row->tag_name
+
+				);
+		return $data;
+
+	}
 }

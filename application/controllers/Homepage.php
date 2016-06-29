@@ -57,10 +57,10 @@ class Homepage extends CI_Controller {
 		for($i=1; $i<=$result['no']; $i++)
 		{
 			$data=$set[$i];
-			$row='	<tr id="row_'.$data['q_id'].'"><a onclick="alpha(this.id);" class="question_row" id="question_row_'.$data['q_id'].'">
+			$row='	<tr id="row_'.$data['q_id'].'"><a onclick="alpha(this.id);" class="question_row" id="question_row'.$data['q_id'].'">
     				<div class="panel panel-default" id="panel_'.$data['q_id'].'">
-  					<div class="panel-heading" id="row_header_'.$data['q_id'].'"><h3>'.$data['title'].'</h3></div>
-  					<div class="panel-body" id="row_body_'.$data['q_id'].'">No of Answer:'.$data['no_ans'].'    Likes:'.$data['no_like'].'  Created On:'.$data['created_on'].'</div>
+  					<div class="panel-heading" id="row_header_'.$data['q_id'].'"><h3>'.$data['title'].'</h3><span class="badge">'.$data['user_name'].'</span></div>
+  					<div class="panel-body" id="row_body_'.$data['q_id'].'"><h5><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Created On<span class="badge">'.$data['created_on'].'</span></span></h5></div>
   					<div class="panel-footer" id="row_footer_'.$data['q_id'].'">'.$data['tag_csv'].'</div>
 					</div>	
 					</a>				
@@ -86,14 +86,15 @@ class Homepage extends CI_Controller {
 			for($i=1; $i<=$result['no']; $i++)
 			{
 			$data=$set[$i];
-			$row='	<tr id="row_'.$data['q_id'].'"><a onclick="alpha(this.id);" class="question_row" id="question_row_'.$data['q_id'].'">
+			$row='	<tr id="row_'.$data['q_id'].'"><a onclick="alpha(this.id);" class="question_row" id="question_row'.$data['q_id'].'">
     				<div class="panel panel-default" id="panel_'.$data['q_id'].'">
-  					<div class="panel-heading" id="row_header_'.$data['q_id'].'"><h3>'.$data['title'].'</h3></div>
-  					<div class="panel-body" id="row_body_'.$data['q_id'].'">No of Answer:'.$data['no_ans'].'    Likes:'.$data['no_like'].'  Created On:'.$data['created_on'].'</div>
+  					<div class="panel-heading" id="row_header_'.$data['q_id'].'"><h3>'.$data['title'].'</h3><span class="badge">'.$data['user_name'].'</span></div>
+  					<div class="panel-body" id="row_body_'.$data['q_id'].'"><h5><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Created On<span class="badge">'.$data['created_on'].'</span></span></h5></div>
   					<div class="panel-footer" id="row_footer_'.$data['q_id'].'">'.$data['tag_csv'].'</div>
 					</div>
 					</a>
   					</tr>';
+  			//$question_data["'question_row_".$data['q_id']."'"]=$data;
   			$html_string.=$row;
 			}
 		// $response=array(
@@ -102,6 +103,7 @@ class Homepage extends CI_Controller {
 		// 	);
 
 		//echo json_encode($response);
+			//$_SESSION['question_data']=$question_data
 		echo $html_string;
 
 		}
@@ -124,10 +126,26 @@ class Homepage extends CI_Controller {
 			'no_tag'=> $result2['no'],
 			'tag_csv'=> $result2['csv']
 			);
+		$tag_csv=$data['tag_csv'];
+		$tag=strtok($tag_csv, ",");
+		$html='<h4>';
+		while($tag !== false) 
+		{
+   			$html.='<a onclick="tag_click(this.id);" id="tag_'.$tag.'"><span class="label label-default">'.$tag.'</span></a>&nbsp;';
+    		$tag = strtok(",");
+		}
+		$html.='</h4>';
+		$data['html']=$html;
 
 		echo json_encode($data);
 
 
+	}
+
+	public function temp()
+	{
+
+		$this->load->view('question_detail_view');
 	}
 
 
