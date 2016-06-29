@@ -148,5 +148,18 @@ class Homepage extends CI_Controller {
 		$this->load->view('question_detail_view');
 	}
 
+	public function load_tag_name()
+	{
+		
+		$tag_name=$this->input->get('tag_name');
+		$_SESSION['tag_name']=$tag_name;
+		$result=array('result'=>"updated");
+		echo json_encode($result);
+	}
+
+	public function load_tag_view()
+	{
+		$this->load->view("tag_detail_view");
+	}
 
 }

@@ -80,4 +80,20 @@ class Qdetail extends CI_Controller {
 		
 	}
 
+	public function load_answers()
+	{
+		$model=$this->getQuestionModel();
+		$result=$model->answers_only();
+
+		$set=$result['set'];
+		$html='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			//$html.=$this->load->view('answer_view',$data,true);
+			$this->load->view('answer_view',$data);
+		}
+		//echo $html;
+	}
+
 }
