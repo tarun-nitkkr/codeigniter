@@ -35,6 +35,7 @@ class Answer_model extends CI_Model
 			$answer_data[$i][5]=$execute[7];
 			$i=$i+1;
 		}*/
+		//print_r($execute);
 		if(!empty($execute)){
 		$this->set_answer_data($execute);
 		return true;

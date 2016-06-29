@@ -19,9 +19,12 @@ class Question_model extends CI_Model
 	{
 		return $this->q_data;
 	}
+<<<<<<< HEAD
+=======
 	
 
 
+>>>>>>> 785a0f35a517e936eaf04ee8acb6fef76b6bf6b6
 	public function get_question_detail($q_id)
 	{
 		$query = "select * from question where q_id =".$q_id;
@@ -30,7 +33,7 @@ class Question_model extends CI_Model
 		if($execute->num_rows()>0)
 		{
 			$row=$execute->row();
-		$q_data = array('u_id'=>$row->u_id,
+		$q_data = array('u_id'=>$row->q_id,
 		'q_title'=>$row->q_title,
 		'q_data'=>$row->q_data,
 		'no_of_likes'=>$row->no_of_likes,
@@ -42,7 +45,6 @@ class Question_model extends CI_Model
 		$this->set_question_data($q_data);
 		return 1;
 		}
-
 		else
 		{
 			return 0;
@@ -57,29 +59,21 @@ class Question_model extends CI_Model
 	public function get_list_of_questions($tag_id)
 	{
 		$i = 0;
-		//$query = "select q_id from question_tag where tag_id='".$tag_id."'";
-		$query = "select q_title from question where q_id IN (select q_id from question_tag where tag_id='".$tag_id."')";
-
+		$query = "select q_id from question_tag where tag_id='".$tag_id."'";
 		$execute = $this->db->query($query);
-		$row = $execute->row();
-		echo "table";
 		if($execute->num_rows()>0)
 		{
 			while($execute->num_rows()>0)
 			{
 				$q_id = $row->q_id;
-				$new_query = "select q_title from question where q_id='".$q_id."'";
-				$newexecute = $this->db->query($new_query);
-				if($newexecute->num_rows>0)
+				$new_query = "select q_title from user_profile where q_id='".$q_id."'";
+				$execute = $this->db->query($new_query);
+				if($execute->num_rows>0)
 				{
-					echo "inside array\n";
-					$newrow = $newexecute->row();
-					$list_questions[$i][0] = $q_id;
-					$list_questions[$i][1] = $newrow->q_title;
+					$list_questions[$q_id][$i] = $row->q_title;
 				}
 				$i = $i+1;
 			}
-
 		}
 		else
 			{
@@ -91,7 +85,7 @@ class Question_model extends CI_Model
 
 	public function get_recent_questions($data)
 	{
-		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id
+		$query="SELECT Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id
 				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on
 				ORDER BY Q.q_id DESC
 				LIMIT ".$data['from'].",10";
@@ -108,7 +102,6 @@ class Question_model extends CI_Model
 			//$row=$execute->row();
 			$data=array(
 				'q_id'=>$row->q_id,
-				'user_name'=>$row->user_name,
 				'title'=> $row->q_title,
 				'no_ans'=> $row->no_of_answer,
 				'no_like'=>$row->no_of_likes,
@@ -141,8 +134,8 @@ class Question_model extends CI_Model
 
 
 
-		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
-				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
+		$query="SELECT Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
+				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id 
 				WHERE UT.u_id=".$user_id."
 				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
 				ORDER BY Q.q_id DESC 
@@ -159,7 +152,6 @@ class Question_model extends CI_Model
 			//$row=$execute->row();
 			$data=array(
 				'q_id'=>$row->q_id,
-				'user_name'=>$row->user_name,
 				'title'=> $row->q_title,
 				'no_ans'=> $row->no_of_answer,
 				'no_like'=>$row->no_of_likes,
@@ -229,25 +221,4 @@ class Question_model extends CI_Model
 		
 	}
 
-	public function get_q_data($q_id)
-	{
-		$query="SELECT UP.user_name,Q.q_id, Q.q_data, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id
-WHERE Q.q_id=".$q_id."
-GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on";
-		$execute=$this->db->query($query);
-		$row=$execute->row();
-		$data=array(
-				'q_id'=>$row->q_id,
-				'user_name'=>$row->user_name,
-				'title'=> $row->q_title,
-				'data'=>$row->q_data,
-				'no_ans'=> $row->no_of_answer,
-				'no_like'=>$row->no_of_likes,
-				'created_on'=> $row->created_on,
-				'tag_csv'=> $row->tag_name
-
-				);
-		return $data;
-
-	}
 }

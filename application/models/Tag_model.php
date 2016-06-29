@@ -20,7 +20,7 @@
 
 		public function set_tag_name($value)
 		{
-			this->tag_name = $value;
+			$this->tag_name = $value;
 		}
 
 		public function set_tag_description($value)
@@ -64,6 +64,8 @@
 			//$execute = query($ta);
 
 			$execute= $this->db->query($tag_query);
+			//$row = $execute->row();
+			$row=$execute->row();
 			if($execute->num_rows() > 0){
 				$row=$execute->row();
 				$tag_id=($row->tag_id);
@@ -72,7 +74,7 @@
 				$no_of_followers = ($row->no_of_followers);
 				$this->set_tag_id($tag_id);
 				$this->set_tag_name($tag_name);
-				$this->set_tag_description($description);
+				$this->set_tag_description($tag_description);
 				$this->set_tag_followers($no_of_followers);
 				return 1;
 			}
