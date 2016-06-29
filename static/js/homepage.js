@@ -153,3 +153,25 @@ function alpha(clicked_id)
     });
 
 }
+
+function tag_click(clicked_id)
+{
+  var str=""+clicked_id;
+  var id=str.substring(4);
+  var data={
+    tag_name: id
+  };
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/load_tag_name",
+      data: data,
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+
+        window.location.replace('http://www.askandanswer.com/index.php/homepage/load_tag_view');
+    }
+
+    });
+}

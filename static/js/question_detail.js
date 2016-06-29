@@ -122,9 +122,9 @@
 
 
 
-// function alpha(clicked_id)
-// {
-//   //var id=$(this).attr('id');
-//   //$("#question_div").html(id);
-//   //$("#question_div").html(clicked_id);
-// }
+function tag_click(clicked_id)
+{
+  //var id=$(this).attr('id');
+  //$("#question_div").html(id);
+  //$("#question_div").html(clicked_id);
+}

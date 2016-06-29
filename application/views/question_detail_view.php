@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="container">
 
       <!-- <h1><?php echo $_SESSION['q_id']?></h1> -->
-      <button data-toggle="collapse" data-target="#demo" class="badge" style="width:100%;"><h4>My Profile<span class="glyphicon glyphicon-user"></span></h4></button>
+      <button data-toggle="collapse" data-target="#demo" class="badge" style="width:100%;"><h4><span class="glyphicon glyphicon-user"></span>My Profile</h4></button>
       <div id="demo" class="collapse">
    <div class="row">
         <div class="col-sm-6" >
@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <br>
 <br>
 <br>
-<button data-toggle="collapse" data-target="#ask_question_div" class="btn btn-primary" style="width:100%;">ASK a QUESTION <span class="glyphicon glyphicon-envelope"></span></button>
+<button data-toggle="collapse" data-target="#ask_question_div" class="btn btn-primary" style="width:100%;"><span class="glyphicon glyphicon-envelope"></span>ASK a QUESTION</button>
 
 <div id="ask_question_div" class="collapse">
 
@@ -106,14 +106,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 <h3><span class="label label-success" style="float:left;">Answers<span class="badge">X</span></span><span class="label label-info" style="float:right;">Posted on<span class="badge">X</span></span></h3>
 </div>
-<div id="tag_div">
-  
-</div>
 <br>
 <br>
 <br>
 <br>
-<button data-toggle="collapse" data-target="#demo" class="btn btn-success" style="width:100%;">Answer this Question<span class="glyphicon glyphicon-pencil"></span></button>
+<button data-toggle="collapse" data-target="#demo" class="btn btn-success" style="width:100%;"><span class="glyphicon glyphicon-pencil"></span>Answer this Question</button>
 
 
 <div id="answer_div">
