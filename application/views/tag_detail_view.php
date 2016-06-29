@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <head>
     <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepage|Question</title> 
+    <title>Homepage|TAG</title> 
   <?php $data=$_SESSION['user_data']?>
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   </head>
@@ -102,21 +102,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <br>
 
 
-<div id="question_info_div">
-<div class="panel panel-primary" id="panel_question">
-      <div class="panel-heading" id="question_title"><h3>Question Title</h3></div>
-      <div class="panel-body" id="question_body">Question Data</div>
-    </div>
-<h3><span class="label label-success" style="float:left;">Answers<span class="badge">X</span></span><span class="label label-info" style="float:right;">Posted on<span class="badge">X</span></span></h3>
+<div id="tag_info_div">
+
 </div>
 <br>
 <br>
 <br>
 <br>
-<button data-toggle="collapse" data-target="#demo" class="btn btn-success" style="width:100%;"><span class="glyphicon glyphicon-pencil"></span>Answer this Question</button>
 
-<h2>ANSWERS</h2>
-<div id="answer_div">
+
+
+<div id="question_div">
 
   
   <!-- <tr id="row">
@@ -164,7 +160,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/static/js/question_detail.js"></script>
+    <script type="text/javascript" src="/static/js/tag_detail.js"></script>
 
         
 

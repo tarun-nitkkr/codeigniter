@@ -21,21 +21,21 @@
    
    
     
-    $.ajax({
-      url: "http://www.askandanswer.com/index.php/qdetail/load_question_detail",
-      type:"get",
-      dataType: "html",
-      success: function(response){
+    // $.ajax({
+    //   url: "http://www.askandanswer.com/index.php/qdetail/load_question_detail",
+    //   type:"get",
+    //   dataType: "html",
+    //   success: function(response){
        
-         console.log(response);
+    //      console.log(response);
 
-        $("#question_info_div").html(response);
-        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+    //     $("#question_info_div").html(response);
+    //     //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
         
-        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
-    }
+    //     //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    // }
 
-    });
+    // });
 
     $.ajax({
       url: "http://www.askandanswer.com/index.php/homepage/user_interaction_details",
@@ -59,21 +59,21 @@
 
     });
 
-    $.ajax({
-      url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
-      type:"get",
-      dataType: "html",
-      success: function(response){
+    // $.ajax({
+    //   url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+    //   type:"get",
+    //   dataType: "html",
+    //   success: function(response){
        
-         console.log(response);
+    //      console.log(response);
 
-        $("#answer_div").html("<table>"+response+"</table>");
-        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+    //     $("#answer_div").html("<table>"+response+"</table>");
+    //     //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
         
-        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
-    }
+    //     //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    // }
 
-    });
+    // });
     
 
    //  $.ajax({

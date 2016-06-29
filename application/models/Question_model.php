@@ -257,4 +257,53 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		return $data;
 
 	}
+
+	public function answers_only()
+	{
+		$q_id=$_SESSION['q_id'];
+		// $data=$_SESSION['user_data'];
+		// $u_id=$data['u_id'];
+		$query = "select A.*, UP.user_name from answer A join user_profile UP ON UP.u_id=A.u_id
+					where A.q_id =".$q_id."
+					order by a_id DESC";
+		//$execute = $this->db->query($query)->result_array();
+		$execute=$this->db->query($query);
+		//$execute=$this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+				
+			$data=array(
+				'a_id'=>$row->a_id,
+				'q_id'=>$row->q_id,
+				'u_id'=>$row->u_id,
+				'user_name'=>$row->user_name,
+				'a_data'=> $row->a_data,
+				'upvotes'=> $row->upvotes,
+				'created_on'=> $row->created_on,
+				'last_modified'=> $row->last_modified
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }
