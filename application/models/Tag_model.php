@@ -100,4 +100,35 @@
 				return 0;
 			}
 		}
+
+
+
+		//function to set follow tag for a user in db
+		public function setFollowDB($data)
+		{
+			if($this->db->insert('user_tag_relation',$data))
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+
+		//function to unfollow tag for a user in db
+		public function setUnfollowDB($data)
+		{
+			$query="delete from user_tag_relation where u_id=".$data['u_id']." and tag_id=".$data['tag_id'];
+
+			if($this->db->query($query))
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
 	}

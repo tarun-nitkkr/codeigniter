@@ -33,7 +33,7 @@ class Tdetail extends CI_Controller {
 	}
 
 
-	public function getUserModel()
+	public function getQuestionModel()
 	{
 		return $this->model;
 	}
@@ -59,7 +59,8 @@ public function tag_detail($tag_name)
 		$tag_data = array('tag_name'=>$tag_name,
 			'tag_id'=>$tag_id,
 			'tag_description'=>$tag_description,
-			'tag_followers'=>$tag_followers
+			'tag_followers'=>$tag_followers,
+			'tag_name'=> $tag_name
 			);
 		return $tag_data;
 
@@ -78,24 +79,113 @@ public function tag_detail($tag_name)
 	return $flag;
 	}
 
-public function question_list_of_tag($tag_id)
-{
-	$this->load->model("Question_model");
-		$qmodel= new Question_model;
-		$list_questions = $qmodel->get_list_of_questions($tag_id);
-		return $list_questions;
-
-}
 
 
-	public function tags(){
-		$tag_name = 'Tobias';
+
+	public function tags()
+	{
+		$tag_name = $_SESSION['tag_name'];
 		$tag_data=$this->tag_detail($tag_name);
+		$_SESSION['tag_id']=$tag_data['tag_id'];
 		$flag =$this->follow_unfollow($tag_data['tag_id']);
-		$list_of_questions=$this->question_list_of_tag($tag_data['tag_id']);
+		$tag_data['flag']=''.$flag;
+		echo json_encode($tag_data);
+		
+		
 
-		var_dump($list_of_questions);
-		$this->load->view("Tag_view",$tag_data);
-}
+		
+	}
+
+
+
+	//function to retrieve questions with a particular tag
+	public function retrieve_tag_question()
+	{
+		$tag_id=$_SESSION['tag_id'];
+		$from=$this->input->get('from');
+
+		$qmodel= $this->getQuestionModel();
+		$result = $qmodel->get_list_of_questions($tag_id, $from);
+
+		$set=$result['set'];
+		//$html_string='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$this->load->view('Question_view',$data);
+  			
+		}
+		// $response=array(
+		// 		'result'=>$html_string
+		// 	//'result'=> $this->load->view('homepage_view','',true)
+		// 	);
+
+		//echo json_encode($response);
+		
+
+
+		
+		
+
+	}
+
+
+	//function to set follow tag for a user
+	public function setFollow()
+	{
+		$tag_id=$_SESSION['tag_id'];
+		$data=$_SESSION['user_data'];
+		$u_id=$data['u_id'];
+		$insert_data=array(
+			'u_id'=>$u_id,
+			'tag_id'=>$tag_id
+			);
+		$this->load->model("Tag_model");
+		$tmodel = new Tag_model;
+		$flag=$tmodel->setFollowDB($insert_data);
+		if($flag)
+		{
+			$response=array('result'=>1);
+		}
+		else
+		{
+			$response=array('result'=>1);
+
+		}
+
+		echo json_encode($response);
+
+	}
+
+
+	//function to set unfollow tag for a user
+	public function setUnfollow()
+	{
+		$tag_id=$_SESSION['tag_id'];
+		$data=$_SESSION['user_data'];
+		$u_id=$data['u_id'];
+		$insert_data=array(
+			'u_id'=>$u_id,
+			'tag_id'=>$tag_id
+			);
+		$this->load->model("Tag_model");
+		$tmodel = new Tag_model;
+		$flag=$tmodel->setUnfollowDB($insert_data);
+		if($flag)
+		{
+			$response=array('result'=>1);
+		}
+		else
+		{
+			$response=array('result'=>1);
+
+		}
+
+		echo json_encode($response);
+
+	}
+
+
+
 
 }
