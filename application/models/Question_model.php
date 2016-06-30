@@ -54,41 +54,32 @@ class Question_model extends CI_Model
 
 // Returning list of all the questions of a particular tag_id for Tags_detail page __F
 
-	public function get_list_of_questions($tag_id)
+	public function get_list_of_questions($tag_id, $from)
 	{
-		$i = 0;
-		echo "Qmodel Tag id=" + $tag_id+"\n";
-	//	$query = "select q_id from question_tag where tag_id='".$tag_id."'";
-		$query = "select question.q_id,question.u_id,question.q_data,question.q_title,question.no_of_answer,question.no_of_likes,question.created_on from question_tag,question where question_tag.tag_id = '".$tag_id."' and question_tag.q_id = question.q_id";
-
-		//$execute = $this->db->query($query);
-		//$row = $execute->row();
-		//echo "Check::table\n";
-		//print_r($execute);
-
-
-
-
-
-		$execute=$this->db->query($query);
-		if($execute->num_rows()>0)
+		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
+				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
+				WHERE QT.tag_id=".$tag_id."
+				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
+				ORDER BY Q.q_id DESC 
+				LIMIT ".$from.",10";
+        $execute=$this->db->query($query);
+        if($execute->num_rows()>0)
 		{
 
 			$set[]=array();
-			$i=0;
+			$i=0;	
 			foreach ($execute->result() as $row) 
 			{
 				# code...
 			//$row=$execute->row();
 			$data=array(
 				'q_id'=>$row->q_id,
-				'u_id'=>$row->u_id,
-				'q_data'=>$row->q_data,
-				'q_title'=> $row->q_title,
-				'no_of_answer'=> $row->no_of_answer,
-				'no_of_like'=>$row->no_of_likes,
-				'created_on'=> $row->created_on
-			
+				'user_name'=>$row->user_name,
+				'title'=> $row->q_title,
+				'no_ans'=> $row->no_of_answer,
+				'no_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'tag_csv'=> $row->tag_name
 
 				);
 			array_push($set, $data);
@@ -103,49 +94,7 @@ class Question_model extends CI_Model
 				);
 			return $result;
 		}
-
-		/*
-
-		if($execute->num_rows()>0)
-		{
-			foreach ($execute->result() as $row) 
-			{
-			
-				//$qq_id = $row->q_id;
-				//$new_query = "select q_title from question where q_id='".$qq_id."'";
-			//	$newexecute = $this->db->query($new_query);
-				//if($newexecute->num_rows>0)
-				//{
-				//echo "inside array\n";
-				//$newrow = $newexecute->row();
-				$list_questions[$i][0] = $row->q_id;
-				$list_questions[$i][1] = $row->u_id;
-				$list_questions[$i][2] = $row->q_data;
-				$list_questions[$i][3] = $row->q_title;
-				$list_questions[$i][4] = $row->no_of_answer;
-				$list_questions[$i][5] = $row->no_of_likes;
-				$list_questions[$i][6] = $row->created_on;
-				//echo $list_questions[$i][1];
-				//echo "\n";	
-			//}
-				$i = $i+1;
-			}
-
-
-			// echo "This is the tag array\n";
-			// echo "<pre>";
-			// print_r($list_questions);
-			// echo "</pre>";
-			return $list_questions;
-			
-			
-		}
-		*/
-		else
-			{
-				echo "error in listing all questions of particular Tag\n";
-				return 0;
-			}
+		return 0;
 	}
 
 
