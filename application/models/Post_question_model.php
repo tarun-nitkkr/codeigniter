@@ -94,9 +94,11 @@ class Post_question_model extends CI_Model
 		{
 			echo "Inserted Value1";
 		}
+		
 		$query_insert_user_tag_relation = "insert into user_tag_relation(u_id,tag_id) values".$value1."";
 		$execute = $this->db->query($query_insert_user_tag_relation);
-	if($execute!="NULL")
+
+		if($execute!="NULL")
 		{
 			echo "not Inserted Value2";
 		}
