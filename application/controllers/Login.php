@@ -562,10 +562,31 @@ class Login extends CI_Controller {
 
 //Post Question
 
-	public function post_question()
+	public function post_question_view()
 	{
 		$this->load->view('Post_question_view');
 	}
+
+	public function post_question()
+	{
+		
+		$question_title = $this->input->post('question_title');
+		$question_data = $this->input->post('question_data');
+		//$tags = $this->input->post('tag');
+		$tags = "Tobias,Dennis,Jerry,Jack";
+		$question_data = array(
+			'q_title'=>$question_title,
+			'q_data'=>$question_data,
+			'tag_name'=>$tags);
+		
+		echo $question_title;
+		$this->load->model('Post_question_model');
+		$pmodel = new Post_question_model;
+		$pmodel->insert_question_data($question_data);
+
+
+	}
+
 	//for loading homepage view
 	public function homepage()
 	{
