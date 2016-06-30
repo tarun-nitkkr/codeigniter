@@ -66,6 +66,16 @@
       success: function(response){
        
          console.log(response);
+        //var str = "Visit W3Schools!";
+        var n = response.search("#myeditModal");
+        if(n==-1)
+        {
+
+        }
+        else
+        {
+          $("#answer_button").hide();
+        }      
 
         $("#answer_div").html("<table>"+response+"</table>");
         //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
@@ -76,24 +86,6 @@
     });
     
 
-   //  $.ajax({
-   //    url: "http://www.askandanswer.com/index.php/homepage/user_interaction_details",
-   //    type:"get",
-   //    dataType: "json",
-   //    success: function(response){
-       
-   //       //console.log(response);
-
-   //      $("#no_ques").html(response.no_ques);
-   //      $("#no_ans").html(response.no_ans);
-   //      $("#no_tag").html(response.no_tag);
-   //      $("#followed_tags_tooltip").attr('title', response.tag_csv);
-   //      //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
-        
-   //      //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
-   //  }
-
-   //  });
     
 });
 
@@ -180,4 +172,112 @@ function tag_click(clicked_id)
     }
 
     });
+}
+
+
+
+function submit_answer()
+{
+  var answer_data=$("#answer_data").val();
+  var data={
+    a_data: answer_data
+  };
+  var flag;
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/post_answer",
+      data: data,
+      type:"post",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+         
+
+        
+      }
+
+
+
+    });
+
+
+  
+
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#answer_div").html("<table>"+response+"</table>");
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
+    });
+
+  
+
+
+
+
+
+
+}
+
+
+function edit_answer_model()
+{
+    var ans_data=$("#answer_div").find('#editable_answer_data').html();
+    //console.log(ans_data);
+    $("#answer_data_edit").text(ans_data);
+}
+
+
+function submit_edited_answer()
+{
+    var answer_data=$("#answer_data_edit").val();
+  var data={
+    a_data: answer_data
+  };
+  var flag;
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/post_edited_answer",
+      data: data,
+      type:"post",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+         
+
+        
+      }
+
+
+
+    });
+
+
+  
+
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#answer_div").html("<table>"+response+"</table>");
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
+    });
+
 }

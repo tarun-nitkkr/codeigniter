@@ -308,4 +308,33 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 			return 0;
 		}
 	}
+
+
+
+
+	//function to update answer in the db
+	public function post_edited_answerDB($data)
+	{
+		
+		$query="update answer set a_data='".$data['a_data']."' where q_id=".$data['q_id']." and u_id=".$data['u_id'];
+		if($this->db->query($query))
+		{
+			return 1;
+		}
+		return 0;
+
+	}
+
+	//function to post the answer into db
+	public function post_answerDB($data)
+	{
+		
+		$query="update question set no_of_answer=no_of_answer+1 where q_id=".$data['q_id'];
+		if($this->db->insert('answer',$data) && $this->db->query($query))
+		{
+			return 1;
+		}
+		return 0;
+
+	}
 }
