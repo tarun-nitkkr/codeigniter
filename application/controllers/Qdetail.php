@@ -84,16 +84,65 @@ class Qdetail extends CI_Controller {
 	{
 		$model=$this->getQuestionModel();
 		$result=$model->answers_only();
-
+		$usr_data=$_SESSION['user_data'];
 		$set=$result['set'];
 		$html='';
 		for($i=1; $i<=$result['no']; $i++)
 		{
 			$data=$set[$i];
+			if($data['u_id']==$usr_data['u_id'])
+			{
+				$data['button']='<button data-toggle="modal" data-target="#myeditModal" class="btn btn-success btn-sm" style="float:right;" onclick="edit_answer_model();"><span class="glyphicon glyphicon-pencil"></span>Edit</button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
+				$data['data_id']='id="editable_answer_data"';
+			}
+			else
+			{
+				$data['button']='';	
+				$data['data_id']='';
+			}
 			//$html.=$this->load->view('answer_view',$data,true);
 			$this->load->view('answer_view',$data);
 		}
 		//echo $html;
+	}
+
+
+
+
+	public function post_answer()
+	{
+		$a_data=$this->input->post('a_data');
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+		$q_id=$_SESSION['q_id'];
+		$model=$this->getQuestionModel();
+		$data=array(
+			'a_data'=>$a_data,
+			'q_id'=>$q_id,
+			'u_id'=>$u_id
+			);
+		$flag=$model->post_answerDB($data);
+		$response=array('result'=>$flag);
+		echo json_encode($response);
+	}
+
+
+	//function to update edited answer
+	public function post_edited_answer()
+	{
+		$a_data=$this->input->post('a_data');
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+		$q_id=$_SESSION['q_id'];
+		$model=$this->getQuestionModel();
+		$data=array(
+			'a_data'=>$a_data,
+			'q_id'=>$q_id,
+			'u_id'=>$u_id
+			);
+		$flag=$model->post_edited_answerDB($data);
+		$response=array('result'=>$flag);
+		echo json_encode($response);
 	}
 
 }

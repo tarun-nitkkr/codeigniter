@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           
         </div>
         <div class="col-sm-3" >
-          <button id="logout_button" type="button" class="btn btn-info"><a href="http://www.askandanswer.com/index.php/login/logout">Logout</a></button>
+          <!-- <button id="logout_button" type="button" class="btn btn-info"><a href="http://www.askandanswer.com/index.php/login/logout">Logout</a></button> -->
         </div>
         
         
@@ -129,7 +129,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <br>
     <br>
-    <button data-toggle="collapse" data-target="#demo" class="btn btn-success" style="width:100%;"><span class="glyphicon glyphicon-pencil"></span>Answer this Question</button>
+    <button data-toggle="modal" data-target="#myModal" class="btn btn-success" style="width:100%;" id="answer_button"><span class="glyphicon glyphicon-pencil"></span>Answer this Question</button>
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Type in your answer:</h4>
+          </div>
+          <div class="modal-body">
+            
+              <!-- <input type="text" placeholder="Your Answer"> -->
+              <textarea rows="15" cols="68" id="answer_data"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" onclick="submit_answer();" class="btn btn-default" data-dismiss="modal" id="submit_answer_button">Submit Answer</button>
+          
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+
+
+    <div class="modal fade" id="myeditModal" role="dialog">
+      <div class="modal-dialog">
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Type in your answer:</h4>
+          </div>
+          <div class="modal-body">
+            
+              <!-- <input type="text" placeholder="Your Answer"> -->
+              <textarea rows="15" cols="68" id="answer_data_edit"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" onclick="submit_edited_answer();" class="btn btn-default" data-dismiss="modal" id="submit_edited_answer_button">Update Answer</button>
+          
+          </div>
+        </div>
+        
+      </div>
+    </div>
     <h2>ANSWERS</h2>
     <div id="answer_div">
       
