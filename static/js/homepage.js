@@ -17,6 +17,9 @@ function field_focus(field, value)
 
 //var row_count=1;
 //Fade in dashboard box
+var question_page=1;
+
+
 $(document).ready(function(){
    
    //$("#question_div").load("http://www.askandanswer.com/index.php/homepage/populate_question_recent");
@@ -64,6 +67,24 @@ $(document).ready(function(){
 
     });
 
+    $("#page_no").html(question_page);
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/retrieve_notification",
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+        //console.log(response);
+        //$("#notification_popover").attr("html",true);
+        //$("#notification_popover").attr("data-content","hello");
+        $('[data-toggle="popover"]').popover({title: "", content: '<table border="1">'+response+'</table>', html: true, placement: "bottom"});
+        //$("#notification_popover").attr("data-content","<table>"+response+"</table>");
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
+    });
 
     
 });
@@ -80,7 +101,7 @@ $("#followed_tab").click(function(){
     //$("#wrong_label").text('hello');
     var data={
       type: 'followed',
-      from: 0
+      from: (question_page-1)*10
     };
     $.ajax({
       url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
@@ -109,7 +130,7 @@ $("#recent_tab").click(function(){
     //$("#wrong_label").text('hello');
     var data={
       type: 'recent',
-      from: 0
+      from: (question_page-1)*10
     };
     $.ajax({
       url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
@@ -174,4 +195,163 @@ function tag_click(clicked_id)
     }
 
     });
+}
+
+
+
+function next_page()
+{
+  question_page++;
+  if($("#recent_tab").attr('class')=='active')
+  {
+    var data={
+      type: 'recent',
+      from: (question_page-1)*10
+    };
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
+      data: data,
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#question_div").html("<table>"+response+"</table>");
+        // $("#recent_tab").attr('class', 'active');
+        // $("#followed_tab").attr('class', '');
+    }
+
+    });
+  }
+
+
+  else
+  {
+    var data={
+      type: 'followed',
+      from: (question_page-1)*10
+    };
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
+      data: data,
+      dataType: "html",
+      type: "get",
+      success: function(response){
+       //if( response.indexOf('result') > -1 )
+       //   console.log("result not empty");
+       //console.log(response.result);
+        //$("#wrong_label").html(response.result
+          console.log(response);
+
+        $("#question_div").html("<table>"+response+"</table>");
+        // $("#recent_tab").attr('class', '');
+        // $("#followed_tab").attr('class', 'active');
+
+    }
+
+  });
+
+
+  }
+  $("#page_no").html(question_page);
+
+}
+
+function previous_page()
+{
+  question_page--;
+  if(question_page<1)
+  {
+    question_page=1;
+  }
+  if($("#recent_tab").attr('class')=='active')
+  {
+    var data={
+      type: 'recent',
+      from: (question_page-1)*10
+    };
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
+      data: data,
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#question_div").html("<table>"+response+"</table>");
+        // $("#recent_tab").attr('class', 'active');
+        // $("#followed_tab").attr('class', '');
+    }
+
+    });
+  }
+
+  else
+  {
+      var data={
+      type: 'followed',
+      from: (question_page-1)*10
+    };
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/populate_question_recent",
+      data: data,
+      dataType: "html",
+      type: "get",
+      success: function(response){
+       //if( response.indexOf('result') > -1 )
+       //   console.log("result not empty");
+       //console.log(response.result);
+        //$("#wrong_label").html(response.result
+          console.log(response);
+
+        $("#question_div").html("<table>"+response+"</table>");
+        // $("#recent_tab").attr('class', '');
+        // $("#followed_tab").attr('class', 'active');
+
+    }
+
+  });
+
+
+
+  }
+  $("#page_no").html(question_page);
+
+}
+
+
+function notification_click(clicked_id)
+{
+  var str=""+clicked_id;
+  var str1=str.substring(17);
+  var ids=str1.split("-",2);
+  var q_id=ids[0];
+  var n_id=ids[1];
+
+  console.log(q_id+"+"+n_id);
+
+  var data={
+    n_id: n_id
+  };
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/setViewed_Notification",
+      data: data,
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+
+        
+    }
+
+    });
+
+  clicked_id="question_row"+q_id;
+  alpha(clicked_id);
+
+
+
 }

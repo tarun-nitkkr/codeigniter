@@ -245,31 +245,31 @@ class Login extends CI_Controller {
 
 	}
 
-	public function send_mail($emailid, $name ,$title, $message)
-	{
-		$config = Array(
-		    'protocol' => 'smtp',
-		    'smtp_host' => 'ssl://smtp.googlemail.com',
-		    'smtp_port' => 465,
-		    'smtp_user' => 'discusswebservice@gmail.com',
-		    'smtp_pass' => 'thisisubuntu',
-		    'mailtype'  => 'html', 
-		    'charset'   => 'iso-8859-1'
-		);
+	// public function send_mail($emailid, $name ,$title, $message)
+	// {
+	// 	$config = Array(
+	// 	    'protocol' => 'smtp',
+	// 	    'smtp_host' => 'ssl://smtp.googlemail.com',
+	// 	    'smtp_port' => 465,
+	// 	    'smtp_user' => 'discusswebservice@gmail.com',
+	// 	    'smtp_pass' => 'thisisubuntu',
+	// 	    'mailtype'  => 'html', 
+	// 	    'charset'   => 'iso-8859-1'
+	// 	);
 
-	    $config['newline'] = "\r\n";
+	//     $config['newline'] = "\r\n";
 
-		$this->load->library('email', $config);
-		$this->email->from('discusswebservice@gmail.com');
-        $this->email->to($emailid , $name);
+	// 	$this->load->library('email', $config);
+	// 	$this->email->from('discusswebservice@gmail.com');
+ //        $this->email->to($emailid , $name);
 
-        $this->email->subject($title);
-        $this->email->message($message);  
+ //        $this->email->subject($title);
+ //        $this->email->message($message);  
 
-        $this->email->send();
+ //        $this->email->send();
 
-        echo $this->email->print_debugger();
-	}
+ //        echo $this->email->print_debugger();
+	// }
 
 
 
@@ -301,7 +301,8 @@ class Login extends CI_Controller {
 			$url=$model->getActivationUrl();
 			$message="Kindly validate your Email-ID by clicking on this link->".$url;
 			$title="ASKandANSWER-Email Verification";
-			$this->send_mail($input_data['emailid'], $input_data['f_name'], $title, $message);
+			$this->load->helper('email_helper');
+			send_mail($input_data['emailid'], $input_data['f_name'], $title, $message);
 
 			echo "Verification Email sent.";
 

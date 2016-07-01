@@ -53,19 +53,11 @@ class Homepage extends CI_Controller {
 		$result=$model->get_recent_questions($input_data);
 
 		$set=$result['set'];
-		$html_string='';
+		//$html_string='';
 		for($i=1; $i<=$result['no']; $i++)
 		{
 			$data=$set[$i];
-			$row='	<tr id="row_'.$data['q_id'].'"><a onclick="alpha(this.id);" class="question_row" id="question_row'.$data['q_id'].'">
-    				<div class="panel panel-default" id="panel_'.$data['q_id'].'">
-  					<div class="panel-heading" id="row_header_'.$data['q_id'].'"><h3>'.$data['title'].'</h3><span class="badge">'.$data['user_name'].'</span></div>
-  					<div class="panel-body" id="row_body_'.$data['q_id'].'"><h5><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Created On<span class="badge">'.$data['created_on'].'</span></span></h5></div>
-  					<div class="panel-footer" id="row_footer_'.$data['q_id'].'">'.$data['tag_csv'].'</div>
-					</div>	
-					</a>				
-  					</tr>';
-  			$html_string.=$row;
+			$this->load->view('Question_view',$data);
 		}
 		// $response=array(
 		// 		'result'=>$html_string
@@ -73,7 +65,7 @@ class Homepage extends CI_Controller {
 		// 	);
 
 		//echo json_encode($response);
-		echo $html_string;
+		//echo $html_string;
 		}
 
 		if($input_data['type']=='followed')
@@ -82,20 +74,11 @@ class Homepage extends CI_Controller {
 			$user_id=$user_data['u_id'];
 			$result=$model->get_followed_question($input_data, $user_id);
 			$set=$result['set'];
-			$html_string='';
+			//$html_string='';
 			for($i=1; $i<=$result['no']; $i++)
 			{
 			$data=$set[$i];
-			$row='	<tr id="row_'.$data['q_id'].'"><a onclick="alpha(this.id);" class="question_row" id="question_row'.$data['q_id'].'">
-    				<div class="panel panel-default" id="panel_'.$data['q_id'].'">
-  					<div class="panel-heading" id="row_header_'.$data['q_id'].'"><h3>'.$data['title'].'</h3><span class="badge">'.$data['user_name'].'</span></div>
-  					<div class="panel-body" id="row_body_'.$data['q_id'].'"><h5><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Created On<span class="badge">'.$data['created_on'].'</span></span></h5></div>
-  					<div class="panel-footer" id="row_footer_'.$data['q_id'].'">'.$data['tag_csv'].'</div>
-					</div>
-					</a>
-  					</tr>';
-  			//$question_data["'question_row_".$data['q_id']."'"]=$data;
-  			$html_string.=$row;
+			$this->load->view('Question_view',$data);
 			}
 		// $response=array(
 		// 		'result'=>$html_string
@@ -104,7 +87,7 @@ class Homepage extends CI_Controller {
 
 		//echo json_encode($response);
 			//$_SESSION['question_data']=$question_data
-		echo $html_string;
+		//echo $html_string;
 
 		}
 
@@ -160,6 +143,42 @@ class Homepage extends CI_Controller {
 	public function load_tag_view()
 	{
 		$this->load->view("tag_detail_view");
+	}
+
+
+
+	//to retrieve notifications
+	public function retrieve_notification()
+	{
+			$this->load->model("notification_model");
+			$model=new notification_model;
+			$user_data=$_SESSION['user_data'];
+			$u_id=$user_data['u_id'];
+			$result=$model->retrieve($u_id);
+			$set=$result['set'];
+			//$html_string='';
+			for($i=1; $i<=$result['no']; $i++)
+			{
+			$data=$set[$i];
+			$this->load->view('notification_view',$data);
+			}
+
+
+	}
+
+	//to set notification viewed status=1
+	public function setViewed_Notification()
+	{
+		$n_id=$this->input->get('n_id');
+
+		$this->load->model("notification_model");
+		$model=new notification_model;
+		$flag=$model->setViewed($n_id);
+
+		$response=array('result'=>$flag);
+
+		echo json_encode($response);
+
 	}
 
 }

@@ -56,11 +56,11 @@ class Question_model extends CI_Model
 
 	public function get_list_of_questions($tag_id, $from)
 	{
-		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
-				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
-				WHERE QT.tag_id=".$tag_id."
+		$query="SELECT UP.user_name,Q.q_id, GROUP_CONCAT(QT.tag_id) ,Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id 
+				JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
+				where QT.tag_id=".$tag_id."
 				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
-				ORDER BY Q.q_id DESC 
+				ORDER BY Q.q_id DESC
 				LIMIT ".$from.",10";
         $execute=$this->db->query($query);
         if($execute->num_rows()>0)
@@ -336,5 +336,74 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		}
 		return 0;
 
+	}
+
+
+	//to get the list of all the users who answeres on that question
+	public function get_contributors($q_id)
+	{
+		$query="SELECT UP.first_name, UP.email_id, UP.u_id  from question Q JOIN answer A ON A.q_id=Q.q_id JOIN user_profile UP ON UP.u_id=A.u_id
+		WHERE Q.q_id=".$q_id;
+		$execute=$this->db->query($query);
+		//$execute=$this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+				
+			$data=array(
+				
+				'name'=>$row->first_name,
+				'email_id'=>$row->email_id,
+				'u_id'=>$row->u_id
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		else
+		{
+			return 0;
+		}
+
+	}
+
+
+
+	//function to get the question owner details
+	public function get_question_owner($q_id)
+	{
+		$query="SELECT UP.first_name, UP.email_id, UP.u_id  from question Q JOIN user_profile UP ON UP.u_id=Q.u_id
+		WHERE Q.q_id=".$q_id;
+		$execute=$this->db->query($query);
+
+		if($execute->num_rows() > 0)
+		{
+			$row=$execute->row();
+			$data=array(
+					
+					'name'=>$row->first_name,
+					'email_id'=>$row->email_id,
+					'u_id'=>$row->u_id
+					);
+			return $data;
+
+
+		}
+		return 0;
+		
 	}
 }

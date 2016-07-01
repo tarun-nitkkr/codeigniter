@@ -9,6 +9,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Homepage</title>
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+     <style>
+  /* Popover */
+  .popover {
+     /* position: absolute;
+      border: 2px black;
+      max-width: 600px;
+      left: 0;
+      right: 0;*/
+      top: 50px;
+      left: -15px;
+      display: block;
+      width: 300px;
+
+  }
+  
+  /*.popover-title {
+      background-color: #73AD21;
+      color: #FFFFFF;
+      font-size: 28px;
+      text-align:center;
+  }
+  
+  .popover-content {
+      background-color: coral;
+      color: #FFFFFF;
+      padding: 50px;
+  }*/
+  
+  .arrow {
+      /*border-right-color: red !important;*/
+      left: 24%;
+  }
+  </style>
   </head>
   <body>
     <div class="container">
@@ -34,6 +67,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </form>
           </div>
           <ul class="nav navbar-nav navbar-right">
+            <li ><a href="#" data-toggle="popover" id="notification_popover"><span class="glyphicon glyphicon-bell"></span>Notification</a></li>
             <li><a href="#" data-toggle="collapse" data-target="#demo"><span class="glyphicon glyphicon-user"></span>Hi,<?php echo $data['first_name']?></a></li>
             <li><a href="http://www.askandanswer.com/index.php/login/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
           </ul>
@@ -163,16 +197,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           
         </table>
       </div>
-      <ul class="pagination">
-        <li class="active"><a href="#">1</a></li>
-        <li ><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-      </ul>
+      
       <ul class="pager">
-        <li class="previous"><a href="#">Previous</a></li>
-        <li class="next"><a href="#">Next</a></li>
+        <li class="previous"><a onclick="previous_page();">Previous</a></li>
+        <li><a id="page_no">Test</a></li>
+        <li class="next"><a onclick="next_page();">Next</a></li>
       </ul>
       <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
