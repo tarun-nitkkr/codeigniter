@@ -31,6 +31,11 @@ class Login extends CI_Controller {
 		session_start();
 		$this->load->model('user_model');
 		$this->model= new user_model;
+		$this->load->helper('url');
+		//to prevent XSS attack
+		$this->load->helper('form');
+		$this->load->helper('security');
+		//$this->load->library('security');
 
 	}
 
@@ -112,6 +117,13 @@ class Login extends CI_Controller {
 				'password' => $this->input->post('pass'),
 				'query_type' => ''
 			);
+
+
+			//preventing XSS attack
+			//xss_clean() of "security" library, which filtered data from passing through
+
+			$data = $this->security->xss_clean($data);
+
 			if(strstr($data['user_name'],'@'))
 			{
 				$data['query_type']='emailid';
@@ -288,7 +300,8 @@ class Login extends CI_Controller {
 			);
 		//var_dump($input_data);
 
-		 //
+		 //heres XSS prevention
+		$input_data = $this->security->xss_clean($input_data);
 
 		$model= $this->getUserModel();
 		$model->setUserData($input_data);
@@ -409,6 +422,7 @@ class Login extends CI_Controller {
 		$input_data = $this->input->post('emailid');
 
 		//$this->load->model('Forgot_pass_model');
+		$data = $this->security->xss_clean($input_data);
 
 		$model= $this->getUserModel();
 		//$model->setUserData($input_data);
@@ -613,4 +627,27 @@ class Login extends CI_Controller {
 	}
 
 
+public function user_answered_questions()
+{
+	$this->load->model('Question_model');
+	$qmodel = new Question_model;
+	$list_of_answered_question = $qmodel->get_list_of_answered_question();
+
+	$no_of_question_answered = count($list_of_answered_question);
+	echo "No of Question answered=".$no_of_question_answered;
+	var_dump($list_of_answered_question);
 }
+
+
+
+public function user_asked_questions()
+{
+	$this->load->model('Question_model');
+	$qmodel = new Question_model;
+	$no_of_question_asked = $qmodel->get_no_of_question_asked();
+
+	echo "No of Question ansked=".$no_of_question_asked;
+
+}
+}
+

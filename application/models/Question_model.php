@@ -339,7 +339,7 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 	}
 
 
-	//to get the list of all the users who answeres on that question
+//to get the list of all the users who answeres on that question
 	public function get_contributors($q_id)
 	{
 		$query="SELECT UP.first_name, UP.email_id, UP.u_id  from question Q JOIN answer A ON A.q_id=Q.q_id JOIN user_profile UP ON UP.u_id=A.u_id
@@ -406,4 +406,40 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		return 0;
 		
 	}
+public function	get_list_of_answered_question()
+{
+	//$userdata = $_SESSION['user_data'];
+	//$u_id = $user_data['u_id'];
+	$u_id=19;
+
+	$query = "select q_title from answer,question where answer.u_id = '".$u_id."' and answer.q_id = question.q_id";
+	$execute = $this->db->query($query)->result_array();
+
+	echo "<pre>";
+	print_r($execute);
+	echo "</pre>";
+	return $execute;
+}
+
+public function user_asked_questions()
+{
+	// $userdata = $_SESSION['user_data'];
+	// $u_id = $user_data['u_id'];
+	$u_id=19;
+
+	$query = "select COUNT(q_id) as count_quest from question where u_id = '".$u_id."'";
+	$execute = $this->db->query($query);
+	$row = $execute->row();
+	$num_question_asked = $row->count_quest;
+
+	if($execute->num_rows()>0)
+	{
+		return $num_question_asked;
+	}
+	else
+	{
+		return 0;
+	}
+
+}
 }
