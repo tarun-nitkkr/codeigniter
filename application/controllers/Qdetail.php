@@ -37,6 +37,22 @@ class Qdetail extends CI_Controller {
 	}
 
 
+	public function send_notification($data)
+	{
+		$this->load->helper('email_helper');
+		send_mail($data['email_id'],$data['name'],$data['subject'],$data['body']);
+
+	}
+
+	//function to bind with notification model and update notification table
+	public function update_notification_table($data)
+	{
+		$this->load->model('notification_model');
+		$n_model=new notification_model;
+		$n_model->insert_notification($data);
+
+	}
+
 	public function load_question_id()
 	{
 		$q_id=$this->input->get('q_id');
@@ -122,7 +138,52 @@ class Qdetail extends CI_Controller {
 			'u_id'=>$u_id
 			);
 		$flag=$model->post_answerDB($data);
+		
+
+		//need a procedure to send notification email to the contributors of the question the question
+
+		
+		$result=$model->get_contributors($q_id);
+		$set=$result['set'];
+		$email_data=array(
+			'subject'=>'Activity on a Question answered by you',
+			'body'=>'There has been a new answer to the question you earlier answered, find out more- www.askandanswer.com'
+			);
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$email_data['email_id']=$data['email_id'];
+			$email_data['name']=$data['name'];
+
+			//update the notification table
+			$n_data=array(
+				'u_id'=>$data['u_id'],
+				'details'=>"There has been a new answer to the question you earlier answered",
+				'q_id'=>$q_id
+				);
+			$this->update_notification_table($n_data);
+			$this->send_notification($email_data);
+		}
+
+		$result=$model->get_question_owner($q_id);
+		$email_data=array(
+			'subject'=>'Activity on a Question answered by you',
+			'body'=>'There has been a new answer to the question you earlier asked, find out more- www.askandanswer.com'
+			);
+		$email_data['email_id']=$result['email_id'];
+		$email_data['name']=$result['name'];
+		$n_data=array(
+				'u_id'=>$result['u_id'],
+				'details'=>"There has been a new answer to the question you asked",
+				'q_id'=>$q_id
+				);
+		$this->update_notification_table($n_data);
+		$this->send_notification($email_data);
+
+
+
 		$response=array('result'=>$flag);
+		//procedure to update the notification table for contibutors
 		echo json_encode($response);
 	}
 
@@ -144,5 +205,8 @@ class Qdetail extends CI_Controller {
 		$response=array('result'=>$flag);
 		echo json_encode($response);
 	}
+
+
+	
 
 }

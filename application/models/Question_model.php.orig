@@ -19,9 +19,12 @@ class Question_model extends CI_Model
 	{
 		return $this->q_data;
 	}
+<<<<<<< HEAD
+=======
 	
 
 
+>>>>>>> 785a0f35a517e936eaf04ee8acb6fef76b6bf6b6
 	public function get_question_detail($q_id)
 	{
 		$query = "select * from question where q_id =".$q_id;
@@ -56,11 +59,11 @@ class Question_model extends CI_Model
 
 	public function get_list_of_questions($tag_id, $from)
 	{
-		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM user_tag_relation UT JOIN question_tag QT ON QT.tag_id=UT.tag_id 
-				JOIN question Q ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
-				WHERE QT.tag_id=".$tag_id."
+		$query="SELECT UP.user_name,Q.q_id, GROUP_CONCAT(QT.tag_id) ,Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id 
+				JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
+				where QT.tag_id=".$tag_id."
 				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
-				ORDER BY Q.q_id DESC 
+				ORDER BY Q.q_id DESC
 				LIMIT ".$from.",10";
         $execute=$this->db->query($query);
         if($execute->num_rows()>0)
@@ -309,7 +312,112 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		}
 	}
 
+
+
+
+
+
+//function to update answer in the db
+	public function post_edited_answerDB($data)
+	{
+		
+		$query="update answer set a_data='".$data['a_data']."' where q_id=".$data['q_id']." and u_id=".$data['u_id'];
+		if($this->db->query($query))
+		{
+			return 1;
+		}
+		return 0;
+
+	}
+
+	//function to post the answer into db
+	public function post_answerDB($data)
+	{
+		
+		$query="update question set no_of_answer=no_of_answer+1 where q_id=".$data['q_id'];
+		if($this->db->insert('answer',$data) && $this->db->query($query))
+		{
+			return 1;
+		}
+		return 0;
+
+	}
 <<<<<<< HEAD
+
+
+	//to get the list of all the users who answeres on that question
+	public function get_contributors($q_id)
+	{
+		$query="SELECT UP.first_name, UP.email_id, UP.u_id  from question Q JOIN answer A ON A.q_id=Q.q_id JOIN user_profile UP ON UP.u_id=A.u_id
+		WHERE Q.q_id=".$q_id;
+		$execute=$this->db->query($query);
+		//$execute=$this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+				
+			$data=array(
+				
+				'name'=>$row->first_name,
+				'email_id'=>$row->email_id,
+				'u_id'=>$row->u_id
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		else
+		{
+			return 0;
+		}
+
+	}
+
+
+
+	//function to get the question owner details
+	public function get_question_owner($q_id)
+	{
+		$query="SELECT UP.first_name, UP.email_id, UP.u_id  from question Q JOIN user_profile UP ON UP.u_id=Q.u_id
+		WHERE Q.q_id=".$q_id;
+		$execute=$this->db->query($query);
+
+		if($execute->num_rows() > 0)
+		{
+			$row=$execute->row();
+			$data=array(
+					
+					'name'=>$row->first_name,
+					'email_id'=>$row->email_id,
+					'u_id'=>$row->u_id
+					);
+			return $data;
+
+
+		}
+		return 0;
+		
+	}
+}
+=======
+}
+
+
+
 public function	get_list_of_answered_question()
 {
 	//$userdata = $_SESSION['user_data'];
@@ -347,34 +455,4 @@ public function user_asked_questions()
 
 }
 }
-=======
-
-
-
-	//function to update answer in the db
-	public function post_edited_answerDB($data)
-	{
-		
-		$query="update answer set a_data='".$data['a_data']."' where q_id=".$data['q_id']." and u_id=".$data['u_id'];
-		if($this->db->query($query))
-		{
-			return 1;
-		}
-		return 0;
-
-	}
-
-	//function to post the answer into db
-	public function post_answerDB($data)
-	{
-		
-		$query="update question set no_of_answer=no_of_answer+1 where q_id=".$data['q_id'];
-		if($this->db->insert('answer',$data) && $this->db->query($query))
-		{
-			return 1;
-		}
-		return 0;
-
-	}
-}
->>>>>>> 78f415902d2efcc0f12a03b01275914d9b6b9424
+>>>>>>> a9cb597298e8a7fe9cdce0997696f66918ac095d

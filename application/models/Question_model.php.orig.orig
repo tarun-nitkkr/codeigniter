@@ -315,9 +315,7 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 
 
 
-
-
-//function to update answer in the db
+	//function to update answer in the db
 	public function post_edited_answerDB($data)
 	{
 		
@@ -342,8 +340,10 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		return 0;
 
 	}
+<<<<<<< HEAD
 
-
+=======
+>>>>>>> dec9da569e332aec4ca98316edd7cd69bf604ad0
 
 
 //to get the list of all the users who answeres on that question
@@ -419,8 +419,52 @@ public function	get_list_of_answered_question()
 	//$u_id = $user_data['u_id'];
 	$u_id=19;
 
-	$query = "select q_title from answer,question where answer.u_id = '".$u_id."' and answer.q_id = question.q_id";
-	$execute = $this->db->query($query)->result_array();
+	//$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM  answer A JOIN question Q ON A.q_id=Q.q_id JOIN question_tag QT ON QT.q_id=Q.q_id JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id and answer.u_id='"$u_id"' GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on ORDER BY Q.q_id DESC";//
+
+				//LIMIT '".$data['from']."',10";
+
+	$query = "select question.q_id,question.u_id,question.q_data,question.q_title,question.no_of_answer,question.no_of_likes,question.created_on,question.last_modified,user_profile.user_name ,group_concat(tags.name)from answer,question ,user_profile,tags where answer.u_id = '".$u_id."' and answer.q_id = question.q_id and question.u_id=user_profile.u_id and question.q_id = question_tag.q_id and question_tag.tad_id = tags.tag_id";
+	//$execute = $this->db->query($query)->result_array();
+	
+	$execute=$this->db->query($query);
+		//$execute=$this->db->query($query);
+		if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+				
+			$data=array(
+				'q_id'=>$row->q_id,
+				'u_id'=>$row->u_id,
+				'q_data'=>$row->q_data,
+				'q_title'=>$row->q_title,
+				'no_of_answer'=> $row->no_of_answer,
+				'no_of_likes'=> $row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'last_modified'=> $row->last_modified,
+				'user_name'=>$row->user_name
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		else
+		{
+			return 0;
+		}
 
 	echo "<pre>";
 	print_r($execute);
@@ -428,25 +472,73 @@ public function	get_list_of_answered_question()
 	return $execute;
 }
 
-public function user_asked_questions()
+public function get_list_of_question_asked()
 {
 	// $userdata = $_SESSION['user_data'];
 	// $u_id = $user_data['u_id'];
 	$u_id=19;
 
-	$query = "select COUNT(q_id) as count_quest from question where u_id = '".$u_id."'";
+	$query = "select *  from question where u_id = '".$u_id."'";
 	$execute = $this->db->query($query);
-	$row = $execute->row();
-	$num_question_asked = $row->count_quest;
+	//$row = $execute->row();
+	
+	// $user_name = $row_username->user_name;
+	// array_push($row,'user_name'=>$user_name);
+	//$num_question_asked = $row->count_quest;
 
 	if($execute->num_rows()>0)
-	{
-		return $num_question_asked;
-	}
-	else
-	{
-		return 0;
-	}
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+				
+			$data=array(
+				'q_id'=>$row->q_id,
+				'u_id'=>$row->u_id,
+				'q_data'=>$row->q_data,
+				'q_title'=>$row->q_title,
+				'no_of_answer'=> $row->no_of_answer,
+				'no_of_likes'=> $row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'last_modified'=> $row->last_modified
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		else
+		{
+			return 0;
+		}
 
 }
+
+public function get_current_user_name()
+{
+	//$userdata = $_SESSION['user_data'];
+	//$u_id = $userdata['u_id'];
+	$u_id = 19;
+	$query="select user_name from user_profile where u_id='".$u_id."'";
+	$execute=$this->db->query($query);
+	$row= $execute->row();
+	return $row->user_name;
+
 }
+<<<<<<< HEAD
+}
+	
+=======
+}
+>>>>>>> dec9da569e332aec4ca98316edd7cd69bf604ad0

@@ -85,6 +85,23 @@
 
     });
     
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/retrieve_notification",
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+        //console.log(response);
+        //$("#notification_popover").attr("html",true);
+        //$("#notification_popover").attr("data-content","hello");
+        $('[data-toggle="popover"]').popover({title: "", content: '<table border="1">'+response+'</table>', html: true, placement: "bottom"});
+        //$("#notification_popover").attr("data-content","<table>"+response+"</table>");
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
+    });
 
     
 });
@@ -279,5 +296,62 @@ function submit_edited_answer()
     }
 
     });
+
+}
+
+function alpha(clicked_id)
+{
+  var str=""+clicked_id;
+  var id=str.substring(12);
+  var data={
+    q_id: id
+  };
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/load_question_id",
+      data: data,
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+
+        window.location.replace('http://www.askandanswer.com/index.php/qdetail/load_view');
+    }
+
+    });
+
+}
+
+function notification_click(clicked_id)
+{
+  var str=""+clicked_id;
+  var str1=str.substring(17);
+  var ids=str1.split("-",2);
+  var q_id=ids[0];
+  var n_id=ids[1];
+
+  console.log(q_id+"+"+n_id);
+
+  var data={
+    n_id: n_id
+  };
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/setViewed_Notification",
+      data: data,
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+
+        
+    }
+
+    });
+
+  clicked_id="question_row"+q_id;
+  alpha(clicked_id);
+
+
 
 }
