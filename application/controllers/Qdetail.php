@@ -181,6 +181,8 @@ class Qdetail extends CI_Controller {
 		$this->send_notification($email_data);
 
 
+		//update user interaction table
+		$model->increment_ans_user_interaction($u_id);
 
 		$response=array('result'=>$flag);
 		//procedure to update the notification table for contibutors
@@ -204,6 +206,33 @@ class Qdetail extends CI_Controller {
 		$flag=$model->post_edited_answerDB($data);
 		$response=array('result'=>$flag);
 		echo json_encode($response);
+	}
+
+
+	//function to like/dislike a answer
+	public function like_dislike_answer()
+	{
+		$type=$this->input->get('type');
+		$a_id=$this->input->get('a_id');
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+
+		$model=$this->getQuestionModel();
+
+		if($type==0)
+		{
+			$flag=$model->dislike_answerDB($u_id,$a_id);
+
+		}
+		else
+		{
+			$flag=$model->like_answerDB($u_id,$a_id);
+
+		}
+
+		$response=array('result'=>$flag);
+		echo json_encode($response);
+
 	}
 
 

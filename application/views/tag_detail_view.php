@@ -68,7 +68,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </form>
           </div>
           <ul class="nav navbar-nav navbar-right">
-            <li ><a href="#" data-toggle="popover" id="notification_popover"><span class="glyphicon glyphicon-bell"></span>Notification</a></li>
+            <li ><a href="#" data-toggle="popover" data-trigger="focus" id="notification_popover"><span class="glyphicon glyphicon-bell"></span>Notification</a></li>
             <li><a href="#" data-toggle="collapse" data-target="#demo"><span class="glyphicon glyphicon-user"></span>Hi,<?php echo $data['first_name']?></a></li>
             <li><a href="http://www.askandanswer.com/index.php/login/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
 
@@ -108,8 +108,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div id="lastname"><?php echo $data['last_name']?></div><br>
       <div id="about_me">About Me:<?php echo $data['about']?></div>
       <div id="email_id">My Email-ID:<?php echo $data['email_id']?></div> -->
-      <button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button>
-      <button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button>
+      <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/asked"<button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button></a>
+      <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/answered"<button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button></a>
       <button data-toggle="collapse" type="button" data-target="#followed_tags_div" class="btn btn-primary" width="100px">Followed Tags <a id="followed_tags_tooltip" data-toggle="tooltip" title="Hooray!"><span class="badge" id="no_tag">10 </span></a></button>
       <div id="followed_tags_div" class="collapse">
       </div>

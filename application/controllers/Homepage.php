@@ -181,4 +181,59 @@ class Homepage extends CI_Controller {
 
 	}
 
+	//to populate the questions asked by user
+	public function populate_asked_questions()
+	{
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+		$from=$this->input->get('from');
+		$model=$this->getQuestionModel();
+		$result=$model->get_questions_ansked($u_id,$from);
+		$set=$result['set'];
+		//$html_string='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$this->load->view('Question_view',$data);
+		}
+
+	}
+
+	//to populate the questions answered by user
+	public function populate_answered_questions()
+	{
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+		$from=$this->input->get('from');
+		$model=$this->getQuestionModel();
+		$result=$model->get_questions_answered($u_id,$from);
+		$set=$result['set'];
+		//$html_string='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$this->load->view('Question_view',$data);
+		}
+
+	}
+
+	public function load_user_specific_question_view($arg)
+	{
+		if($arg=='asked')
+		{
+			$data=array('type'=>'ASKED QUESTIONS:');
+		}
+		else
+		{
+			$data=array('type'=>'ANSWERED QUESTIONS:');
+
+		}
+		
+		$this->load->view('user_specific_question_view', $data);
+
+	}
+
+	
+
+
 }

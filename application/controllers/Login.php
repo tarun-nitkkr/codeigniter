@@ -627,27 +627,6 @@ class Login extends CI_Controller {
 	}
 
 
-public function user_answered_questions()
-{
-	$this->load->model('Question_model');
-	$qmodel = new Question_model;
-	$list_of_answered_question = $qmodel->get_list_of_answered_question();
-
-	$no_of_question_answered = count($list_of_answered_question);
-	echo "No of Question answered=".$no_of_question_answered;
-	var_dump($list_of_answered_question);
-}
-
-
-
-public function user_asked_questions()
-{
-	$this->load->model('Question_model');
-	$qmodel = new Question_model;
-	$no_of_question_asked = $qmodel->get_no_of_question_asked();
-
-	echo "No of Question ansked=".$no_of_question_asked;
-
-}
+	/*Deleted Functions*/
 }
 
