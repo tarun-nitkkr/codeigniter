@@ -456,6 +456,10 @@ class Login extends CI_Controller {
 		$newpassword = $this->input->post('pass');
 		echo "Here is new  password set\n";
 		$email_id = $this->input->post('email_id');
+
+			$newpassword = $this->security->xss_clean($newpassword);
+			$email_id = $this->security->xss_clean($email_id);
+			
 		echo $email_id;
 		echo "Password=";
 		echo $newpassword;
@@ -643,10 +647,13 @@ public function user_asked_questions()
 {
 	$this->load->model('Question_model');
 	$qmodel = new Question_model;
-	$no_of_question_asked = $qmodel->get_no_of_question_asked();
-
-	echo "No of Question ansked=".$no_of_question_asked;
+	$list_of_question_asked = $qmodel->get_list_of_question_asked();
+	var_dump($list_of_question_asked );
+	$user_name = $qmodel->get_current_user_name();
+	echo "user_name=".$user_name;
+	//echo "No of Question ansked=".$no_of_question_asked;
 
 }
+
 }
 
