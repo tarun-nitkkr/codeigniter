@@ -75,7 +75,7 @@ class Qdetail extends CI_Controller {
 		$data=$model->get_q_data($q_id);
 		//generate question div html
 		$html='<div class="panel panel-primary" id="panel_question">
-      		<div class="panel-heading" id="question_title"><h3>'.$data['title'].'</h3><span class="badge">'.$data['user_name'].'</span></div>
+      		<div class="panel-heading" id="question_title"><h3>'.$data['title'].'</h3><a href="http://www.askandanswer.com/index.php/homepage/load_user_profile_view/'.$data['user_name'].'"><span class="badge">'.$data['user_name'].'</span></a></div>
       		<div class="panel-body" id="question_body">'.$data['data'].'</div>
     		</div>
 			<h3><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Posted on<span class="badge">'.$data['created_on'].'</span></span></h3><br><br><h4>TAGS</h4><h4>';
@@ -137,13 +137,16 @@ class Qdetail extends CI_Controller {
 			'q_id'=>$q_id,
 			'u_id'=>$u_id
 			);
-		$flag=$model->post_answerDB($data);
+		
 		
 
 		//need a procedure to send notification email to the contributors of the question the question
 
-		
+		//fetching the previous contributors
 		$result=$model->get_contributors($q_id);
+
+		//inserting the new answer in the DB
+		$flag=$model->post_answerDB($data);
 		$set=$result['set'];
 		$email_data=array(
 			'subject'=>'Activity on a Question answered by you',
@@ -181,6 +184,8 @@ class Qdetail extends CI_Controller {
 		$this->send_notification($email_data);
 
 
+		//update user interaction table
+		$model->increment_ans_user_interaction($u_id);
 
 		$response=array('result'=>$flag);
 		//procedure to update the notification table for contibutors
@@ -204,6 +209,33 @@ class Qdetail extends CI_Controller {
 		$flag=$model->post_edited_answerDB($data);
 		$response=array('result'=>$flag);
 		echo json_encode($response);
+	}
+
+
+	//function to like/dislike a answer
+	public function like_dislike_answer()
+	{
+		$type=$this->input->get('type');
+		$a_id=$this->input->get('a_id');
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+
+		$model=$this->getQuestionModel();
+
+		if($type==0)
+		{
+			$flag=$model->dislike_answerDB($u_id,$a_id);
+
+		}
+		else
+		{
+			$flag=$model->like_answerDB($u_id,$a_id);
+
+		}
+
+		$response=array('result'=>$flag);
+		echo json_encode($response);
+
 	}
 
 

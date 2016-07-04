@@ -355,3 +355,71 @@ function notification_click(clicked_id)
 
 
 }
+
+function like_click(clicked_id)
+{
+  var str=""+clicked_id;
+  var str1=str.substring(7);
+  var ids=str1.split("-",2);
+  var status=ids[0];
+  var ans_id=ids[1];
+
+  if(status==0)
+  {
+    //like
+    var data={
+    type: 1,
+    a_id: ans_id
+    };
+  }
+  else
+  {
+    //unlike
+    var data={
+    type: 0,
+    a_id: ans_id
+    };
+  }
+
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/like_dislike_answer",
+      data: data,
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+
+        
+    }
+
+    });
+
+
+  setTimeout(function(){ 
+
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#answer_div").html("<table>"+response+"</table>");
+        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+        
+        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+    }
+
+    });
+
+   }, 1000);
+
+  
+
+  //$("#"+clicked_id).attr('id', 'status_'+data['type']);
+
+
+  
+}

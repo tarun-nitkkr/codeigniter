@@ -4,11 +4,27 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
-
+//ini_set('max_execution_time', 0); 
+//ini_set('memory_limit','2048M');
+	/**
+	 * Index Page for this controller.
+	 *
+	 * Maps to the following URL
+	 * 		http://example.com/index.php/welcome
+	 *	- or -
+	 * 		http://example.com/index.php/welcome/index
+	 *	- or -
+	 * Since this controller is set as the default controller in
+	 * config/routes.php, it's displayed at http://example.com/
+	 *
+	 * So any other public methods not prefixed with an underscore will
+	 * map to /index.php/welcome/<method_name>
+	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 */
 
 	private $model;
 
-	
+	//public function initialize_model()
 	function __construct()
 	{
 		parent::__construct();
@@ -19,6 +35,7 @@ class Login extends CI_Controller {
 		//to prevent XSS attack
 		$this->load->helper('form');
 		$this->load->helper('security');
+		//$this->load->library('security');
 
 	}
 
@@ -176,7 +193,7 @@ class Login extends CI_Controller {
 					$cookie = array(
    					'name'   => 'askandanswer_user_cookie',
       				'value'  => $cookie_value,
-       				'expire' => '200',
+       				'expire' => '86400',
     				'domain' => '.askandanswer.com',
     				'path'   => '/'
     				);
@@ -616,30 +633,6 @@ class Login extends CI_Controller {
 	}
 
 
-public function user_answered_questions()
-{
-	$this->load->model('Question_model');
-	$qmodel = new Question_model;
-	$list_of_answered_question = $qmodel->get_list_of_answered_question();
-
-	$no_of_question_answered = count($list_of_answered_question);
-	echo "No of Question answered=".$no_of_question_answered;
-	var_dump($list_of_answered_question);
-}
-
-
-
-public function user_asked_questions()
-{
-	$this->load->model('Question_model');
-	$qmodel = new Question_model;
-	$list_of_question_asked = $qmodel->get_list_of_question_asked();
-	var_dump($list_of_question_asked );
-	$user_name = $qmodel->get_current_user_name();
-	echo "user_name=".$user_name;
-	//echo "No of Question ansked=".$no_of_question_asked;
-
-}
-
+	/*Deleted Functions*/
 }
 

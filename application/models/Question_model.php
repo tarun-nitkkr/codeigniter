@@ -266,10 +266,13 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 	public function answers_only()
 	{
 		$q_id=$_SESSION['q_id'];
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
 		// $data=$_SESSION['user_data'];
 		// $u_id=$data['u_id'];
-		$query = "select A.*, UP.user_name from answer A join user_profile UP ON UP.u_id=A.u_id
-					where A.q_id =".$q_id."
+		$query = "select A.*, UP.user_name, GROUP_CONCAT(AL.u_id) as liked_by from answer A join user_profile UP ON UP.u_id= A.u_id LEFT JOIN answer_likes AL 
+					ON AL.a_id=A.a_id					where A.q_id =".$q_id."	
+                    GROUP BY 1,2
 					order by a_id DESC";
 		//$execute = $this->db->query($query)->result_array();
 		$execute=$this->db->query($query);
@@ -283,7 +286,17 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 			{
 				# code...
 			//$row=$execute->row();
-				
+			$liked_by=",".$row->liked_by.",";
+			//echo strpos($liked_by,",".$u_id.",");
+			if(strpos($liked_by,",".$u_id.",")===false)
+			{
+				$status=0;
+			}
+			else
+			{
+				$status=1;
+			}
+
 			$data=array(
 				'a_id'=>$row->a_id,
 				'q_id'=>$row->q_id,
@@ -292,7 +305,8 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 				'a_data'=> $row->a_data,
 				'upvotes'=> $row->upvotes,
 				'created_on'=> $row->created_on,
-				'last_modified'=> $row->last_modified
+				'last_modified'=> $row->last_modified,
+				'like_status'=>$status
 				);
 			array_push($set, $data);
 
@@ -413,40 +427,151 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		return 0;
 		
 	}
-public function	get_list_of_answered_question()
-{
-	//$userdata = $_SESSION['user_data'];
-	//$u_id = $user_data['u_id'];
-	$u_id=19;
+		
 
-	$query = "select q_title from answer,question where answer.u_id = '".$u_id."' and answer.q_id = question.q_id";
-	$execute = $this->db->query($query)->result_array();
+	/*deleted functions*/
 
-	echo "<pre>";
-	print_r($execute);
-	echo "</pre>";
-	return $execute;
-}
 
-public function user_asked_questions()
-{
-	// $userdata = $_SESSION['user_data'];
-	// $u_id = $user_data['u_id'];
-	$u_id=19;
 
-	$query = "select COUNT(q_id) as count_quest from question where u_id = '".$u_id."'";
-	$execute = $this->db->query($query);
-	$row = $execute->row();
-	$num_question_asked = $row->count_quest;
-
-	if($execute->num_rows()>0)
+	//function to increment no. of answered questions in user interaction table
+	public function increment_ans_user_interaction($u_id)
 	{
-		return $num_question_asked;
-	}
-	else
-	{
+		$query="update user_interaction_table set no_of_answer=no_of_answers+1 where u_id=".$u_id;
+		if($this->db->query($query))
+		{
+			return 1;
+		}
 		return 0;
 	}
 
+
+
+	//function to get questions asked a particular user
+	public function get_questions_ansked($u_id,$from)
+	{
+		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id 
+				JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
+				WHERE Q.u_id=".$u_id."
+				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
+				ORDER BY Q.q_id DESC 
+				LIMIT ".$from.",10";
+
+		$execute=$this->db->query($query);
+        if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+			$data=array(
+				'q_id'=>$row->q_id,
+				'user_name'=>$row->user_name,
+				'title'=> $row->q_title,
+				'no_ans'=> $row->no_of_answer,
+				'no_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'tag_csv'=> $row->tag_name
+
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		return 0;
+
+
+
+
+	}
+
+	//function to get questions to which a user answered
+	public function get_questions_answered($u_id,$from)
+	{
+		$query="SELECT UP.user_name,Q.q_id, Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM answer A JOIN question Q on Q.q_id=A.q_id JOIN question_tag QT ON QT.q_id=Q.q_id 
+				JOIN tags T ON T.tag_id=QT.tag_id JOIN user_profile UP ON Q.u_id=UP.u_id 
+				WHERE A.u_id=".$u_id."
+				GROUP BY Q.q_id, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_likes, Q.created_on 
+				ORDER BY Q.q_id DESC 
+				LIMIT ".$from.",10";
+
+		$execute=$this->db->query($query);
+        if($execute->num_rows()>0)
+		{
+
+			$set[]=array();
+			$i=0;
+			foreach ($execute->result() as $row) 
+			{
+				# code...
+			//$row=$execute->row();
+			$data=array(
+				'q_id'=>$row->q_id,
+				'user_name'=>$row->user_name,
+				'title'=> $row->q_title,
+				'no_ans'=> $row->no_of_answer,
+				'no_like'=>$row->no_of_likes,
+				'created_on'=> $row->created_on,
+				'tag_csv'=> $row->tag_name
+
+				);
+			array_push($set, $data);
+
+			$i++;
+
+			}
+			$result=array(
+
+				'set'=>$set,
+				'no'=>$i
+				);
+			return $result;
+		}
+		return 0;
+	}
+
+
+
+
+
+	//function to like a answer
+	public function like_answerDB($u_id,$a_id)
+	{
+		$data=array(
+			'u_id'=> $u_id,
+			'a_id'=> $a_id
+			);
+
+		$query="update answer set upvotes=upvotes+1 where a_id=".$a_id;
+		if($this->db->insert('answer_likes',$data) && $this->db->query($query))
+		{
+			return 1;
+		}
+		return 0;
+	}
+
+	//function to like a answer
+	public function dislike_answerDB($u_id,$a_id)
+	{
+		$query="delete from answer_likes where a_id=".$a_id." and u_id=".$u_id;
+		$query2="update answer set upvotes=upvotes-1 where a_id=".$a_id;
+		if($this->db->query($query) && $this->db->query($query2))
+		{
+			return 1;
+		}
+		return 0;
+	}
+
+
 }
-}
+

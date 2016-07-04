@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <head>
     <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepage</title>
+    <title>Questions|User</title>
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
      <style>
@@ -68,19 +68,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
           <ul class="nav navbar-nav navbar-right">
             <li ><a href="#" data-toggle="popover" data-trigger="focus" id="notification_popover"><span class="glyphicon glyphicon-bell"></span>Notification</a></li>
-            <li><a href="#" data-toggle="collapse" data-target="#demo"><span class="glyphicon glyphicon-user"></span>Hi,<?php echo $data['first_name']?></a></li>
+            <!-- <li><a href="#" data-toggle="collapse" data-target="#demo"><span class="glyphicon glyphicon-user"></span>Hi,<?php echo $data['first_name']?></a></li> -->
             <li><a href="http://www.askandanswer.com/index.php/login/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
           </ul>
         </div>
       </nav>
-      <div id="demo" class="collapse">
-        <br><br><br><br><br><br>
+      <br><br><br><br>
+      <h3 id="label" data-userid="<?php echo $u_id; ?>">User Profile:<?php echo $user_name; ?></h3>
+      <div id="profile_div">
+        <br>
         <div class="row">
           <div class="col-sm-6" >
-            <img src="/uploads/<?php echo $data['pic_url']?>.png" class="img-circle" alt="Cinque Terre" width="100" height="100">
+            <img src="/uploads/<?php echo $pic_url; ?>.png" class="img-circle" alt="Cinque Terre" width="200" height="200">
           </div>
           
-          <div id="firstname" class="col-sm-6" ><h2>Welcome <?php echo $data['first_name']?> <?php echo $data['last_name']?></h2>
+          <div id="firstname" class="col-sm-6" ><h2><?php echo $first_name;?> <?php echo $last_name;?></h2>
           </div>
           
           
@@ -91,7 +93,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             
           </div>
           
-          <div id="email_id" class="col-sm-3" ><p>My Email-ID:<?php echo $data['email_id']?></p>
+          <div id="email_id" class="col-sm-3" ><p>Email-ID:<?php echo $email_id;?></p>
           
         </div>
         <div class="col-sm-3" >
@@ -105,8 +107,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div id="lastname"><?php echo $data['last_name']?></div><br>
       <div id="about_me">About Me:<?php echo $data['about']?></div>
       <div id="email_id">My Email-ID:<?php echo $data['email_id']?></div> -->
-      <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/asked"<button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button></a>
-      <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/answered"<button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button></a>
+      <a ><button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button></a>
+      <a ><button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button></a>
       <button data-toggle="collapse" type="button" data-target="#followed_tags_div"  class="btn btn-primary" width="100px">Followed Tags <a  id="followed_tags_tooltip" data-toggle="tooltip" title="Hooray!"><span class="badge" id="no_tag">10 </span></a></button>
       <div id="followed_tags_div" class="collapse">
         Hello
@@ -157,12 +159,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <br>
       <br>
       <br>
-      <ul class="nav nav-tabs">
-        <li class="active" id="recent_tab"><a >Recent</a></li>
-        <li id="followed_tab"><a >Followed</a></li>
-        <!-- <li><a href="#">Menu 2</a></li>
-        <li><a href="#">Menu 3</a></li> -->
-      </ul>
+      
+      <h3>Questions asked by <?php echo $first_name; ?>:</h3>
       <div id="question_div">
         <table>
           
@@ -205,7 +203,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </ul>
       <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="/static/js/homepage.js"></script>
+      <script type="text/javascript" src="/static/js/user_profile.js"></script>
       
       
       

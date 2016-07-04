@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <head>
     <meta charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Homepage</title>
+    <title>Questions|User</title>
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
      <style>
@@ -157,12 +157,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <br>
       <br>
       <br>
-      <ul class="nav nav-tabs">
-        <li class="active" id="recent_tab"><a >Recent</a></li>
-        <li id="followed_tab"><a >Followed</a></li>
-        <!-- <li><a href="#">Menu 2</a></li>
-        <li><a href="#">Menu 3</a></li> -->
-      </ul>
+      <h3 id="label"><?php echo $type; ?></h3>
       <div id="question_div">
         <table>
           
@@ -205,7 +200,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </ul>
       <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="/static/js/homepage.js"></script>
+      <script type="text/javascript" src="/static/js/user_specific_questions.js"></script>
       
       
       

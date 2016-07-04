@@ -554,5 +554,37 @@ public function check()
 		}
 	}
 
+
+
+	//function to get user data based on user_name
+	public function get_user_data($user_name)
+	{
+		$query="select * from user_profile where user_name='".$user_name."'";
+		$execute= $this->db->query($query);
+		if($execute->num_rows() > 0)
+		{
+			$row=$execute->row();
+			$user_data=array(
+				'u_id'=> $row->u_id,
+				'first_name'=> $row->first_name,
+				'last_name'=> $row->last_name,
+				'about'=> $row->about,
+				'pic_url'=>$row->profile_pic_url,
+				'user_name'=> $row->user_name,
+				'email_id'=> $row->email_id,
+				'registration_date'=> $row->registration_date,
+				'isactivated'=> $row->isActivated,
+
+			);
+			return $user_data;
+
+		}
+
+		return 0;
+		
+
+		
+	}
+	
 }
 

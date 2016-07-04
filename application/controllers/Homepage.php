@@ -94,11 +94,20 @@ class Homepage extends CI_Controller {
 	}
 
 	
-	public function user_interaction_details()
+	public function user_interaction_details($u_id=0)
 	{
+		if($u_id==0)
+		{
+			$user_data=$_SESSION['user_data'];
+			$user_id=$user_data['u_id'];
+		}
+
+		else
+		{
+			$user_id=$u_id;
+		}
 		$model=$this->getQuestionModel();
-		$user_data=$_SESSION['user_data'];
-		$user_id=$user_data['u_id'];
+		
 		$result1=$model->user_interaction_details_db($user_id);
 		$result2=$model->user_tag_relation_db($user_id);
 
@@ -180,5 +189,91 @@ class Homepage extends CI_Controller {
 		echo json_encode($response);
 
 	}
+
+	//to populate the questions asked by user
+	public function populate_asked_questions()
+	{
+		
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+		$from=$this->input->get('from');
+		$model=$this->getQuestionModel();
+		$result=$model->get_questions_ansked($u_id,$from);
+		$set=$result['set'];
+		//$html_string='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$this->load->view('Question_view',$data);
+		}
+
+	}
+
+	//to populate the questions answered by user
+	public function populate_answered_questions()
+	{
+		$user_data=$_SESSION['user_data'];
+		$u_id=$user_data['u_id'];
+		$from=$this->input->get('from');
+		$model=$this->getQuestionModel();
+		$result=$model->get_questions_answered($u_id,$from);
+		$set=$result['set'];
+		//$html_string='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$this->load->view('Question_view',$data);
+		}
+
+	}
+
+	public function load_user_specific_question_view($arg)
+	{
+		if($arg=='asked')
+		{
+			$data=array('type'=>'ASKED QUESTIONS:');
+		}
+		else
+		{
+			$data=array('type'=>'ANSWERED QUESTIONS:');
+
+		}
+		
+		$this->load->view('user_specific_question_view', $data);
+
+	}
+
+
+
+	//function to load specific user profile view
+	public function load_user_profile_view($arg)
+	{
+		//call function to get the user data for the cuurent user_name
+		$this->load->model('user_model');
+		$model= new user_model;
+		$user_data=$model->get_user_data($arg);
+
+		$this->load->view('user_profile_view', $user_data);
+	}
+
+	//function to populate user_specific asked questions for profile page
+	public function populate_asked_questions_with_u_id()
+	{
+		//$user_data=$_SESSION['user_data'];
+		$u_id=$this->input->get('u_id');
+		$from=$this->input->get('from');
+		$model=$this->getQuestionModel();
+		$result=$model->get_questions_ansked($u_id,$from);
+		$set=$result['set'];
+		//$html_string='';
+		for($i=1; $i<=$result['no']; $i++)
+		{
+			$data=$set[$i];
+			$this->load->view('Question_view',$data);
+		}
+
+	}
+	
+
 
 }
