@@ -193,7 +193,7 @@ class Login extends CI_Controller {
 					$cookie = array(
    					'name'   => 'askandanswer_user_cookie',
       				'value'  => $cookie_value,
-       				'expire' => '200',
+       				'expire' => '86400',
     				'domain' => '.askandanswer.com',
     				'path'   => '/'
     				);

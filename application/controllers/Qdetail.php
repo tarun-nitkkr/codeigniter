@@ -75,7 +75,7 @@ class Qdetail extends CI_Controller {
 		$data=$model->get_q_data($q_id);
 		//generate question div html
 		$html='<div class="panel panel-primary" id="panel_question">
-      		<div class="panel-heading" id="question_title"><h3>'.$data['title'].'</h3><span class="badge">'.$data['user_name'].'</span></div>
+      		<div class="panel-heading" id="question_title"><h3>'.$data['title'].'</h3><a href="http://www.askandanswer.com/index.php/homepage/load_user_profile_view/'.$data['user_name'].'"><span class="badge">'.$data['user_name'].'</span></a></div>
       		<div class="panel-body" id="question_body">'.$data['data'].'</div>
     		</div>
 			<h3><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Posted on<span class="badge">'.$data['created_on'].'</span></span></h3><br><br><h4>TAGS</h4><h4>';
@@ -137,13 +137,16 @@ class Qdetail extends CI_Controller {
 			'q_id'=>$q_id,
 			'u_id'=>$u_id
 			);
-		$flag=$model->post_answerDB($data);
+		
 		
 
 		//need a procedure to send notification email to the contributors of the question the question
 
-		
+		//fetching the previous contributors
 		$result=$model->get_contributors($q_id);
+
+		//inserting the new answer in the DB
+		$flag=$model->post_answerDB($data);
 		$set=$result['set'];
 		$email_data=array(
 			'subject'=>'Activity on a Question answered by you',
