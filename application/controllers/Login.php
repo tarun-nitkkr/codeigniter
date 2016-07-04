@@ -4,27 +4,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
-//ini_set('max_execution_time', 0); 
-//ini_set('memory_limit','2048M');
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
+
 
 	private $model;
 
-	//public function initialize_model()
+	
 	function __construct()
 	{
 		parent::__construct();
@@ -35,7 +19,6 @@ class Login extends CI_Controller {
 		//to prevent XSS attack
 		$this->load->helper('form');
 		$this->load->helper('security');
-		//$this->load->library('security');
 
 	}
 
@@ -436,7 +419,9 @@ class Login extends CI_Controller {
 			$f_name = $model->getFirstName();
 			$message="Kindly reset your ASKandANSWER password by clicking on this link->".$url;
 			$title="ASKandANSWER- Reset Password";
-			$this->send_mail($input_data, $f_name, $title, $message);
+			$this->load->helper('email_helper');
+			
+			send_mail($input_data, $f_name, $title, $message);
 
 			echo "Reset Password Email sent.";
 			

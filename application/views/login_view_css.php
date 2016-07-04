@@ -63,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <div id="wrong_label" ></div>
 <div id="emailid_label" >34</div>
 <p>New here?<a href="http://www.askandanswer.com/index.php/login/signup_view"><u style="color:#f1c40f;">Register</u></a></p>
-<p>Forgot your password? <u style="color:#f1c40f;">Click Here!</u></p>
+<p>Forgot your password? <a href="http://www.askandanswer.com/index.php/login/forget_password_load_view">Click Here!</u></p>
   
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
     
