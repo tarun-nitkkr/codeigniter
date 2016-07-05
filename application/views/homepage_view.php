@@ -10,6 +10,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
      <style>
+
+     <style>
+body{width:610px;}
+.frmSearch {border: 1px solid #F0F0F0;background-color:#C8EEFD;margin: 2px 0px;padding:40px;}
+#question-list{float:left;list-style:none;margin:0;padding:0;width:190px;}
+#question-list li{padding: 10px; background:#FAFAFA;border-bottom:#F0F0F0 1px solid;}
+#question-list li:hover{background:#F0F0F0;}
+#search-box{padding: 10px;border: #F0F0F0 1px solid;}
+</style>
   /* Popover */
   .popover {
      /* position: absolute;
@@ -37,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       padding: 50px;
   }*/
   
-  .arrow {
+  .arrow {  
       /*border-right-color: red !important;*/
       left: 24%;
   }
@@ -56,13 +65,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li><a href="#">Page 2</a></li>
             <li></li> -->
           </ul>
+
+         <!--  implementing AUTO search here F -->
           <div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search" action="#">
+            <form class="navbar-form" role="search" action="http://www.askandanswer.com/index.php/login/search_input/">
+
+            <!-- Here implementing Auto suggest -->
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                <div class="input-group-btn">
-                  <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-                </div>
+                <input type="text" class="form-control" placeholder="Question" name="srch-term" id="search-box">
+                <!-- <div id="suggesstion-box"></div>
+                q_id <input type = "hidden" name ="q_id" id = "q_id"> -->
+                <input type="submit" value="Submit">
+                <!-- <div class="input-group-btn">
+
+                  <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search" onclick ="send_param"></i></button>
+
+                </div> -->
               </div>
             </form>
           </div>
@@ -210,5 +228,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       
       
     </div>
-  </body>
+
+
+
+
+
+ 
+</body>
 </html>

@@ -634,5 +634,51 @@ class Login extends CI_Controller {
 
 
 	/*Deleted Functions*/
+
+
+
+	//Search function Implemented
+
+	public function search_input()
+	{
+		// $term = $this->input->post('srch-term');
+		//  $this->load->model('Search_model');
+		// $smodel = new Search_model;
+
+		// http://localhost:8983/solr/collection1/select?q=q_title%3A%22hendrerit+consectetuer%2C+cursus+et%2C+magna.+Praesent+interdum+ligula+eu%22&wt=json&indent=true
+
+
+	//	$term = "hen";
+		$term = "Hamilton";
+		$url ="http://localhost:8983/solr/collection1/suggest?suggest=true&suggest.build=true&suggest.dictionary=mySuggester&wt=json&suggest.q=et";
+		// $url ="http://localhost:8983/solr/collection1/suggest?suggest=true&suggest.build=true&suggest.dictionary=mySuggester&wt=json&suggest.q='".$term."'";
+
+		$json_data = file_get_contents($url);
+		$data = json_decode($json_data);
+
+		//var_dump($data);
+		echo "<pre>";
+		print_r($data);
+		echo "</pre>";
+
+	}
+
 }
 
+
+
+		// if($search_result['0']=='user')
+		// {
+		// 	$this->load->model('User_model');
+		// 	$umodel = new User_model;
+		// 	$result=$umodel->direct_login($term);
+		// 	$this->load->view('User_profile',$result);
+		// }
+
+		// else if($search_result['0']=='java'|| $search_result['0']=='C'||$search_result['0']=='C++')
+		// {
+		// 	$this->load->model('Tag_model');
+		// 	$tmodel = new Tag_model;
+		// 	$result=$tmodel->get_tag_detail($term);
+		// 	$this->load->view('Tag_view',$result);
+		// } 
