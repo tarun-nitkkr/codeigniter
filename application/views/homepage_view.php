@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Homepage</title>
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
      <style>
   /* Popover */
   .popover {
@@ -117,12 +118,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <br>
       <br>
       <button data-toggle="collapse" data-target="#ask_question_div" class="btn btn-primary" style="width:100%;">ASK a QUESTION <span class="glyphicon glyphicon-envelope"></span></button>
+      
+      
       <div id="ask_question_div" class="collapse">
-        <form class="form-horizontal" role="form" action="http://www.askandanswer.com/index.php/login/login_call" method="post" id="ask_form">
+        <br>
+        <form class="form-horizontal" role="form" action="http://www.askandanswer.com/index.php/homepage/post_question" method="get" >
           <div class="form-group">
             <label class="control-label col-sm-2" for="question-title">Question Title:</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" id="question_title" placeholder="Question Title">
+              <input class="form-control" id="question_title" placeholder="Question Title">
             </div>
           </div>
           <div class="form-group">
@@ -131,27 +135,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <textarea class="form-control" rows="5" id="question_detail"></textarea>
             </div>
           </div>
-          <div class="form-group">
-            <label class="control-label" for="question_tags">Select tags from list(ctrl+click):</label>
-            <select class="form-control" id="question_tags">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-            </select>
+          <div class="form-group ui-widget">
+            <label class="control-label col-sm-2" for="ask_question_tags">Select tags from list:</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="ask_question_tags">
+            </div>
           </div>
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default">Submit</button>
+              <button type="button" class="btn btn-default" id="ask_question_button">Submit</button>
             </div>
           </div>
         </form>
-        <!-- <form action="http://www.askandanswer.com/index.php/login/login_call" method="post" id="ask_form" >
-          Question Title<input type="text" name="userid" id="question_title" ><br>
-          Tags<input type="password" name="pass" id="question_tags" ><br>
-          Question Detail<input type="text" name="pass" id="question_detail" ><br>
-          <input type="submit" value="ASK" id = "ask_button" >
-        </form> -->
+        
       </div>
       <br>
       <br>
@@ -204,6 +200,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <li class="next"><a onclick="next_page();">Next</a></li>
       </ul>
       <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+      <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
       <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="/static/js/homepage.js"></script>
       
