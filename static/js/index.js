@@ -50,7 +50,7 @@ $("#submit_button").click(function(){
        //   console.log("result not empty");
        //console.log(response.result);
        if(response.result!='1')
-        $("#wrong_label").html("Invalid username/password combination!");
+        $("#wrong_label").html(response['result']);
           //console.log(response);
        else
        {
@@ -68,6 +68,7 @@ $("#submit_button").click(function(){
 $("#signup_button").click(function() {
   /* Act on the event */
   $('#signin_form').hide();
+  $('#wrong_label').hide();
   $('#signup_form').fadeIn('slow');
 });
 
@@ -97,8 +98,9 @@ $("#emailid").change(function() {
           {
 
             //$("#wrong_label").html(response.result);
+            console.log("email hit");
             $("#emailid_label").html(response.result);
-            $("#emailid_label").fadeOut(1000);
+            $("#emailid_label").show();
           }
           else
           {

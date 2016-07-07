@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li></li> -->
           </ul>
           <div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search" action="#">
+            <form class="navbar-form" id="search_form" role="search" action="#">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
                 <div class="input-group-btn">
@@ -108,8 +108,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div id="lastname"><?php echo $data['last_name']?></div><br>
       <div id="about_me">About Me:<?php echo $data['about']?></div>
       <div id="email_id">My Email-ID:<?php echo $data['email_id']?></div> -->
-      <a ><button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button></a>
-      <a ><button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button></a>
+      <button type="button" class="btn btn-primary disabled" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button>
+      <button type="button" class="btn btn-primary disabled" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button>
       <button data-toggle="collapse" type="button" data-target="#followed_tags_div"  class="btn btn-primary" width="100px">Followed Tags <a  id="followed_tags_tooltip" data-toggle="tooltip" title="Hooray!"><span class="badge" id="no_tag">10 </span></a></button>
       <div id="followed_tags_div" class="collapse">
         Hello

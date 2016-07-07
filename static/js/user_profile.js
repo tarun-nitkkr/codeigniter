@@ -135,6 +135,18 @@ $(document).ready(function(){
        
       console.log(response);
        availableTags=response.set;
+
+       //search bar tags autocomplete
+       $("#srch-term").autocomplete({
+          source: availableTags,
+          appendTo: $('#search_form'),
+          select: function( event, ui ) {
+            //alert("tag_select-"+ui.item.value);
+            var id="tag_"+ui.item.value;
+            tag_click(id);
+          
+          }
+        });
        
     }
 

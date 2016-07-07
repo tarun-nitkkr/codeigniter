@@ -337,7 +337,7 @@ public function check()
 		//$user_info=array();
 		$user_data=$this->getUserData();
 
-		var_dump($user_data);
+		//var_dump($user_data);
 		// $query="select * from user_profile order by u_id DESC  LIMIT 1";
 		// $u_id=0;
 

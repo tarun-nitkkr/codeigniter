@@ -51,13 +51,15 @@ function extractLast( term ) {
 
         if(response['flag']==1)
         {
-          $("#follow_unfollow_button").html('Unfollow');  
+          $("#follow_unfollow_button").html('Unfollow'); 
+          $("#follow_unfollow_button").attr('class','btn btn-danger'); 
           $("#follow_unfollow_button").attr('id', 'unfollow_button');  
           
         }
         else
         {
           $("#follow_unfollow_button").html('Follow');  
+          $("#follow_unfollow_button").attr('class','btn btn-info'); 
           $("#follow_unfollow_button").attr('id', 'follow_button');  
           
 
@@ -143,6 +145,18 @@ function extractLast( term ) {
        
       console.log(response);
        availableTags=response.set;
+
+       //search bar tags autocomplete
+       $("#srch-term").autocomplete({
+          source: availableTags,
+          appendTo: $('#search_form'),
+          select: function( event, ui ) {
+            //alert("tag_select-"+ui.item.value);
+            var id="tag_"+ui.item.value;
+            tag_click(id);
+          
+          }
+        });
        
     }
 
@@ -228,6 +242,7 @@ function follow_unfollow(clicked_id)
          if(response.result==1)
          {
           $("#follow_button").html('Unfollow');  
+          $("#follow_button").attr('class','btn btn-danger');  
           $("#follow_button").attr('id', 'unfollow_button'); 
 
          }
@@ -248,6 +263,7 @@ function follow_unfollow(clicked_id)
          if(response.result==1)
          {
           $("#unfollow_button").html('Follow');  
+          $("#unfollow_button").attr('class','btn btn-info');
           $("#unfollow_button").attr('id', 'follow_button'); 
 
          }

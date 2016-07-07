@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li></li> -->
           </ul>
           <div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search">
+            <form class="navbar-form" id="search_form" role="search" action="#">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
                 <div class="input-group-btn">
@@ -155,7 +155,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <!--  -->
     <div id="tag_info_div">
-      <h3>Tag:-<span class="label label-default" id="tag_name">New</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" class="btn btn-warning" width="100px">Total Followers <span class="badge" id="no_followers">20 </span></button>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="follow_unfollow(this.id);" class="btn btn-info" id="follow_unfollow_button">Info</button></h3>
+      <h3><span class="label label-default" id="tag_name">New</span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTotal Followers <span class="badge" id="no_followers">20 </span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<button type="button" onclick="follow_unfollow(this.id);" class="btn btn-info" id="follow_unfollow_button">Info</button></h3>
       <div class="panel panel-default">
         <h4>&nbspDescription:</h4><div class="panel-body" id="tag_description">A Basic Panel</div>
       </div>

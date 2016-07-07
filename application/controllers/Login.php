@@ -209,7 +209,7 @@ class Login extends CI_Controller {
 
 			else
 			{
-				$array=array('result'=> "<p>kindly activate your account first!</p>");
+				$array=array('result'=> "<p>Kindly activate your account first!</p>");
 				echo json_encode($array);
 			}
 		}
@@ -244,9 +244,9 @@ class Login extends CI_Controller {
 
 		if($flag)
 		{
-			echo "your account is successfully updated.";
-			sleep(2);
-			$this->load->view('login_view');
+			echo "<h3>Your account is successfully activated.</h3>";
+			//sleep(5);
+			$this->load->view('login_view_css');
 
 		}
 		else
@@ -257,31 +257,31 @@ class Login extends CI_Controller {
 
 	}
 
-	// public function send_mail($emailid, $name ,$title, $message)
-	// {
-	// 	$config = Array(
-	// 	    'protocol' => 'smtp',
-	// 	    'smtp_host' => 'ssl://smtp.googlemail.com',
-	// 	    'smtp_port' => 465,
-	// 	    'smtp_user' => 'discusswebservice@gmail.com',
-	// 	    'smtp_pass' => 'thisisubuntu',
-	// 	    'mailtype'  => 'html', 
-	// 	    'charset'   => 'iso-8859-1'
-	// 	);
+	public function send_mail($emailid, $name ,$title, $message)
+	{
+		$config = Array(
+		    'protocol' => 'smtp',
+		    'smtp_host' => 'ssl://smtp.googlemail.com',
+		    'smtp_port' => 465,
+		    'smtp_user' => 'discusswebservice@gmail.com',
+		    'smtp_pass' => 'thisisubuntu',
+		    'mailtype'  => 'html', 
+		    'charset'   => 'iso-8859-1'
+		);
 
-	//     $config['newline'] = "\r\n";
+	    $config['newline'] = "\r\n";
 
-	// 	$this->load->library('email', $config);
-	// 	$this->email->from('discusswebservice@gmail.com');
- //        $this->email->to($emailid , $name);
+		$this->load->library('email', $config);
+		$this->email->from('discusswebservice@gmail.com');
+        $this->email->to($emailid , $name);
 
- //        $this->email->subject($title);
- //        $this->email->message($message);  
+        $this->email->subject($title);
+        $this->email->message($message);  
 
- //        $this->email->send();
+        $this->email->send();
 
- //        echo $this->email->print_debugger();
-	// }
+        echo $this->email->print_debugger();
+	}
 
 
 
@@ -314,10 +314,10 @@ class Login extends CI_Controller {
 			$url=$model->getActivationUrl();
 			$message="Kindly validate your Email-ID by clicking on this link->".$url;
 			$title="ASKandANSWER-Email Verification";
-			$this->load->helper('email_helper');
-			send_mail($input_data['emailid'], $input_data['f_name'], $title, $message);
+			//$this->load->helper('email_helper');
+			$this->send_mail($input_data['emailid'], $input_data['f_name'], $title, $message);
 
-			echo "Verification Email sent.";
+			echo "<h4>Verification Email sent.</h4>";
 
 
 
@@ -331,14 +331,16 @@ class Login extends CI_Controller {
 			
          if ( ! $this->upload->do_upload("profile")) {
             $error = array('error' => $this->upload->display_errors()); 
-            echo "ERROR Encountered!";
+            echo "ERROR Encountered!".$error;
             
          }
 			
          else { 
-            $data = array('upload_data' => $this->upload->data()); 
-            var_dump($data);
-            echo "Profile Successfully registered!";
+            //$data = array('upload_data' => $this->upload->data()); 
+            //var_dump($data);
+            echo "<h3>Profile Successfully registered! Kindly activate your account by clicking on the link sent to your emailID</h3>";
+            //sleep(5);
+            $this->load->view("login_view_css");
 
 
            } 

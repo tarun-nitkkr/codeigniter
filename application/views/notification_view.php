@@ -4,7 +4,7 @@
     
     
   </div> -->
-  <div class="panel-body" id="notification_body_<?php echo $q_id; ?>" <?php if($is_viewed){echo 'style="color:grey;"';}  ?>><span class="glyphicon glyphicon-asterisk"></span><?php echo $details; ?></div>
+  <div class="panel-body" id="notification_body_<?php echo $q_id; ?>" <?php if($is_viewed){echo 'style="color:grey;"';}  ?>><span class="glyphicon glyphicon-asterisk">&nbsp</span><?php echo $details; ?></div>
   <!-- <p><?php echo $details; ?></p> -->
 </a>
 </tr>

@@ -614,7 +614,7 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		
 		
 		
-		$query_insert_user_tag_relation = "insert into user_tag_relation(u_id,tag_id) values".$value1."";
+		//$query_insert_user_tag_relation = "insert into user_tag_relation(u_id,tag_id) values".$value1."";
 		//$execute = $this->db->query($query_insert_user_tag_relation);
 
 		
@@ -622,7 +622,7 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		$query_insert_user_interaction_table=" update user_interaction_table set no_of_questions=no_of_questions+1 where u_id=".$u_id;
 		//$execute = $this->db->query($query_insert_user_interaction_table);
 
-		if($this->db->query($query_insert_quest_tag) && $this->db->query($query_insert_user_tag_relation) && $this->db->query($query_insert_user_interaction_table))
+		if($this->db->query($query_insert_quest_tag) && $this->db->query($query_insert_user_interaction_table))
 		{
 			//echo "Inserted Value1";
 			return 1;

@@ -123,7 +123,7 @@ class Homepage extends CI_Controller {
 		$html='<h4>';
 		while($tag !== false) 
 		{
-   			$html.='<a onclick="tag_click(this.id);" id="tag_'.$tag.'"><span class="label label-default">'.$tag.'</span></a>&nbsp;';
+   			$html.='<a href="#" onclick="tag_click(this.id);" id="tag_'.$tag.'"><span class="label label-default">'.$tag.'</span></a>&nbsp;';
     		$tag = strtok(",");
 		}
 		$html.='</h4>';

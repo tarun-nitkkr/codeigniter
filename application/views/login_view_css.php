@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <input type="text" name="userid" value="Username" id="reg_userid" onFocus="field_focus(this, 'Username');" onblur="field_blur(this, 'Username');" class="email"><br>
   <div id="username_label" >12</div>
   <input type="text" name="emailid" value="Email" id="emailid" onFocus="field_focus(this, 'Email');" onblur="field_blur(this, 'Email');" class="email"><br>
-  
+  <div id="emailid_label" >34</div>
 
   <input type="password" name="pass" value="password" id="reg_pass" onFocus="field_focus(this, 'Password');" onblur="field_blur(this, 'Password');" class="email" ><br>
   <input type="password" name="repass" value="password" id="reg_repass" onFocus="field_focus(this, 'Password');" onblur="field_blur(this, 'Password');" class="email"><br>
@@ -61,9 +61,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </form> 
 </div> <!-- End Box -->
   <div id="wrong_label" ></div>
-<div id="emailid_label" >34</div>
-<p>New here?<a href="http://www.askandanswer.com/index.php/login/signup_view"><u style="color:#f1c40f;">Register</u></a></p>
-<p>Forgot your password? <u style="color:#f1c40f;">Click Here!</u></p>
+
+
+<p>Forgot your password? <a href="http://www.askandanswer.com/index.php/login/forget_password_load_view"><u style="color:#f1c40f;">Click Here!</u></a></p>
   
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
     

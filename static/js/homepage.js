@@ -128,13 +128,25 @@ $(document).ready(function(){
       console.log(response);
        availableTags=response.set;
        
+       //search bar tags autocomplete
+       $("#srch-term").autocomplete({
+          source: availableTags,
+          appendTo: $('#search_form'),
+          select: function( event, ui ) {
+            //alert("tag_select-"+ui.item.value);
+            var id="tag_"+ui.item.value;
+            tag_click(id);
+          
+          }
+        });
+       
     }
 
     });
 
 
 
-
+    
 
     
 });
@@ -144,6 +156,8 @@ $(document).ready(function(){
 //     //event.preventDefault(); 
 //     .submit();
 // 	});
+
+
 
 
 //ask_question_autocomplete
@@ -261,8 +275,10 @@ function alpha(clicked_id)
 
 function tag_click(clicked_id)
 {
+
   var str=""+clicked_id;
   var id=str.substring(4);
+  //console.log(id);
   var data={
     tag_name: id
   };

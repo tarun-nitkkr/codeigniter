@@ -14,6 +14,8 @@
 //     }
 //   }
 
+var like_valid=1;
+
 var availableTags = [
       "ActionScript",
       "AppleScript",
@@ -143,6 +145,18 @@ function extractLast( term ) {
        
       console.log(response);
        availableTags=response.set;
+
+       //search bar tags autocomplete
+       $("#srch-term").autocomplete({
+          source: availableTags,
+          appendTo: $('#search_form'),
+          select: function( event, ui ) {
+            //alert("tag_select-"+ui.item.value);
+            var id="tag_"+ui.item.value;
+            tag_click(id);
+          
+          }
+        });
        
     }
 
@@ -284,38 +298,29 @@ function submit_answer()
       success: function(response){
        
          console.log(response.result);
-         
 
-        
+          $.ajax({
+            url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+            type:"get",
+            dataType: "html",
+            success: function(response){
+             
+               console.log(response);
+
+              $("#answer_div").html("<table>"+response+"</table>");
+              //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+              
+              //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+          }
+
+          });
+
+         
       }
 
 
 
     });
-
-
-  
-
-    $.ajax({
-      url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
-      type:"get",
-      dataType: "html",
-      success: function(response){
-       
-         console.log(response);
-
-        $("#answer_div").html("<table>"+response+"</table>");
-        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
-        
-        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
-    }
-
-    });
-
-  
-
-
-
 
 
 
@@ -434,6 +439,14 @@ function notification_click(clicked_id)
 
 function like_click(clicked_id)
 {
+ 
+  if(like_valid==0)
+  {
+    console.log("invalid like");
+    return;
+
+  } 
+  like_valid=0;
   var str=""+clicked_id;
   var str1=str.substring(7);
   var ids=str1.split("-",2);
@@ -465,32 +478,52 @@ function like_click(clicked_id)
       success: function(response){
        
          console.log(response.result);
+         $.ajax({
+            url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+            type:"get",
+            dataType: "html",
+            success: function(response){
+             
+               //console.log(response);
+
+              $("#answer_div").html("<table>"+response+"</table>");
+              like_valid=1;
+              //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+              
+              //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+          }
+
+        });
+
+         
 
         
-    }
+      }
 
     });
 
 
-  setTimeout(function(){ 
+  // setTimeout(function(){ 
 
-    $.ajax({
-      url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
-      type:"get",
-      dataType: "html",
-      success: function(response){
+  //   $.ajax({
+  //     url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
+  //     type:"get",
+  //     dataType: "html",
+  //     success: function(response){
        
-         console.log(response);
+  //        console.log(response);
 
-        $("#answer_div").html("<table>"+response+"</table>");
-        //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
+  //       $("#answer_div").html("<table>"+response+"</table>");
+  //       //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
         
-        //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
-    }
+  //       //$(div).find('.ps_desc').html(response.result).end().appendTo($('body'));
+  //   }
 
-    });
+  //   });
 
-   }, 1000);
+  //  }, 1000);
+
+
 
   
 
@@ -560,3 +593,11 @@ $("#ask_question_button").click(function(event) {
 
 
 });
+
+
+
+function answer_modal_click()
+{
+  $('#answer_data').focus();
+  console.log("modal click");  
+}

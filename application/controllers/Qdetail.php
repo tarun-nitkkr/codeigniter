@@ -78,7 +78,7 @@ class Qdetail extends CI_Controller {
       		<div class="panel-heading" id="question_title"><h3>'.$data['title'].'</h3><a href="http://www.askandanswer.com/index.php/homepage/load_user_profile_view/'.$data['user_name'].'"><span class="badge">'.$data['user_name'].'</span></a></div>
       		<div class="panel-body" id="question_body">'.$data['data'].'</div>
     		</div>
-			<h3><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span><span class="label label-info" style="float:right;">Posted on<span class="badge">'.$data['created_on'].'</span></span></h3><br><br><h4>TAGS</h4><h4>';
+			<h3><a href="#answer_div"><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span></a><span class="label label-info" style="float:right;">Posted on<span class="badge">'.$data['created_on'].'</span></span></h3><br><br><h4>TAGS</h4><h4>';
 		
 
 		$tag_csv=$data['tag_csv'];
@@ -86,7 +86,7 @@ class Qdetail extends CI_Controller {
 		$tag=strtok($tag_csv, ",");
 		while ($tag !== false) 
 		{
-   			$html.='<a onclick="tag_click(this.id);" id="tag_'.$tag.'"><span class="label label-default">'.$tag.'</span></a>&nbsp;';
+   			$html.='<a href="#" onclick="tag_click(this.id);" id="tag_'.$tag.'"><span class="label label-default">'.$tag.'</span></a>&nbsp;';
     		$tag = strtok(",");
 		}
 		$html.='</h4>';

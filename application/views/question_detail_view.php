@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li></li> -->
           </ul>
           <div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search">
+            <form class="navbar-form" id="search_form" role="search" action="#">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
                 <div class="input-group-btn">
@@ -163,7 +163,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <br>
     <br>
-    <button data-toggle="modal" data-target="#myModal" class="btn btn-success" style="width:100%;" id="answer_button"><span class="glyphicon glyphicon-pencil"></span>Answer this Question</button>
+    <button data-toggle="modal" data-target="#myModal" class="btn btn-success" onclick="answer_modal_click();" style="width:100%;" id="answer_button"><span class="glyphicon glyphicon-pencil"></span>Answer this Question</button>
     <div class="modal fade" id="myModal" role="dialog">
       <div class="modal-dialog">
         
