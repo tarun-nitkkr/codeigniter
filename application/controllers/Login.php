@@ -438,7 +438,9 @@ class Login extends CI_Controller {
 			$f_name = $model->getFirstName();
 			$message="Kindly reset your ASKandANSWER password by clicking on this link->".$url;
 			$title="ASKandANSWER- Reset Password";
-			$this->send_mail($input_data, $f_name, $title, $message);
+			$this->load->helper('email_helper');
+			
+			send_mail($input_data, $f_name, $title, $message);
 
 			echo "Reset Password Email sent.";
 			
@@ -459,6 +461,10 @@ class Login extends CI_Controller {
 		$newpassword = $this->input->post('pass');
 		echo "Here is new  password set\n";
 		$email_id = $this->input->post('email_id');
+
+			$newpassword = $this->security->xss_clean($newpassword);
+			$email_id = $this->security->xss_clean($email_id);
+			
 		echo $email_id;
 		echo "Password=";
 		echo $newpassword;
@@ -630,5 +636,51 @@ class Login extends CI_Controller {
 
 
 	/*Deleted Functions*/
-}
 
+
+
+	//Search function Implemented
+
+	public function search_input()
+	{
+		// $term = $this->input->post('srch-term');
+		//  $this->load->model('Search_model');
+		// $smodel = new Search_model;
+
+		// http://localhost:8983/solr/collection1/select?q=q_title%3A%22hendrerit+consectetuer%2C+cursus+et%2C+magna.+Praesent+interdum+ligula+eu%22&wt=json&indent=true
+
+		// $this->load->model('Question_model');
+		// $qmodel = new Question_model;
+		
+
+		// //Following is from Mysql
+
+		//  $search_term = $this->input->POST('term');
+		//  $result1= $qmodel->get_question_title($search_term);
+
+		//  $this->load->model('Tag_model');
+		//  $qmodel = new Tag_model;
+		//  $result2 = $qmodel->get_tag_name($search_term));
+
+
+		//  echo "result_question::";
+		//  echo "<pre>";
+		//  print_r($result1);
+		//  echo "</pre>";
+
+
+		//  echo "result_tag::";
+		//  echo "<pre>";
+		//  print_r($result1);
+		//  echo "</pre>";
+
+		//   print json_encode($result1.$result2);
+		
+
+	
+
+
+
+	}
+
+}

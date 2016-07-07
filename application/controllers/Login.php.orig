@@ -1,33 +1,24 @@
+
+
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
 
 	private $model;
 
-	//public function initialize_model()
+	
 	function __construct()
 	{
 		parent::__construct();
 		session_start();
 		$this->load->model('user_model');
 		$this->model= new user_model;
+		$this->load->helper('url');
+		//to prevent XSS attack
+		$this->load->helper('form');
+		$this->load->helper('security');
 
 	}
 
@@ -109,6 +100,13 @@ class Login extends CI_Controller {
 				'password' => $this->input->post('pass'),
 				'query_type' => ''
 			);
+
+
+			//preventing XSS attack
+			//xss_clean() of "security" library, which filtered data from passing through
+
+			$data = $this->security->xss_clean($data);
+
 			if(strstr($data['user_name'],'@'))
 			{
 				$data['query_type']='emailid';
@@ -178,7 +176,7 @@ class Login extends CI_Controller {
 					$cookie = array(
    					'name'   => 'askandanswer_user_cookie',
       				'value'  => $cookie_value,
-       				'expire' => '200',
+       				'expire' => '86400',
     				'domain' => '.askandanswer.com',
     				'path'   => '/'
     				);
@@ -242,31 +240,31 @@ class Login extends CI_Controller {
 
 	}
 
-	public function send_mail($emailid, $name ,$title, $message)
-	{
-		$config = Array(
-		    'protocol' => 'smtp',
-		    'smtp_host' => 'ssl://smtp.googlemail.com',
-		    'smtp_port' => 465,
-		    'smtp_user' => 'discusswebservice@gmail.com',
-		    'smtp_pass' => 'thisisubuntu',
-		    'mailtype'  => 'html', 
-		    'charset'   => 'iso-8859-1'
-		);
+	// public function send_mail($emailid, $name ,$title, $message)
+	// {
+	// 	$config = Array(
+	// 	    'protocol' => 'smtp',
+	// 	    'smtp_host' => 'ssl://smtp.googlemail.com',
+	// 	    'smtp_port' => 465,
+	// 	    'smtp_user' => 'discusswebservice@gmail.com',
+	// 	    'smtp_pass' => 'thisisubuntu',
+	// 	    'mailtype'  => 'html', 
+	// 	    'charset'   => 'iso-8859-1'
+	// 	);
 
-	    $config['newline'] = "\r\n";
+	//     $config['newline'] = "\r\n";
 
-		$this->load->library('email', $config);
-		$this->email->from('discusswebservice@gmail.com');
-        $this->email->to($emailid , $name);
+	// 	$this->load->library('email', $config);
+	// 	$this->email->from('discusswebservice@gmail.com');
+ //        $this->email->to($emailid , $name);
 
-        $this->email->subject($title);
-        $this->email->message($message);  
+ //        $this->email->subject($title);
+ //        $this->email->message($message);  
 
-        $this->email->send();
+ //        $this->email->send();
 
-        echo $this->email->print_debugger();
-	}
+ //        echo $this->email->print_debugger();
+	// }
 
 
 
@@ -285,7 +283,8 @@ class Login extends CI_Controller {
 			);
 		//var_dump($input_data);
 
-		 //
+		 //heres XSS prevention
+		$input_data = $this->security->xss_clean($input_data);
 
 		$model= $this->getUserModel();
 		$model->setUserData($input_data);
@@ -298,7 +297,8 @@ class Login extends CI_Controller {
 			$url=$model->getActivationUrl();
 			$message="Kindly validate your Email-ID by clicking on this link->".$url;
 			$title="ASKandANSWER-Email Verification";
-			$this->send_mail($input_data['emailid'], $input_data['f_name'], $title, $message);
+			$this->load->helper('email_helper');
+			send_mail($input_data['emailid'], $input_data['f_name'], $title, $message);
 
 			echo "Verification Email sent.";
 
@@ -405,6 +405,7 @@ class Login extends CI_Controller {
 		$input_data = $this->input->post('emailid');
 
 		//$this->load->model('Forgot_pass_model');
+		$data = $this->security->xss_clean($input_data);
 
 		$model= $this->getUserModel();
 		//$model->setUserData($input_data);
@@ -418,7 +419,9 @@ class Login extends CI_Controller {
 			$f_name = $model->getFirstName();
 			$message="Kindly reset your ASKandANSWER password by clicking on this link->".$url;
 			$title="ASKandANSWER- Reset Password";
-			$this->send_mail($input_data, $f_name, $title, $message);
+			$this->load->helper('email_helper');
+			
+			send_mail($input_data, $f_name, $title, $message);
 
 			echo "Reset Password Email sent.";
 			
@@ -439,6 +442,10 @@ class Login extends CI_Controller {
 		$newpassword = $this->input->post('pass');
 		echo "Here is new  password set\n";
 		$email_id = $this->input->post('email_id');
+
+			$newpassword = $this->security->xss_clean($newpassword);
+			$email_id = $this->security->xss_clean($email_id);
+			
 		echo $email_id;
 		echo "Password=";
 		echo $newpassword;
@@ -453,32 +460,44 @@ class Login extends CI_Controller {
 	
 
 
+
+
+
+	
+
+
+
+
+
+/*
 	public function tag()
 	{
 		//$tag_name = $this->input->post("tag_name");
-		$tag_name = "Tobias";
+		$tag_name = 'Tobias';
 		$this->load->model("Tag_model");
-		$model = new Tag_model;
-		$tag_data = $model->get_tag_detail($tag_name);
+		$tmodel = new Tag_model;
+		$tag_data = $tmodel->get_tag_detail($tag_name);
 
 		//getting tag details
 
-		$tag_id = $model->get_tag_id();
-		$tag_description = $model->get_tag_description();
-		$tag_followers = $model->get_tag_followers();
+		$tag_id = $tmodel->get_tag_id();
+		//echo "Tag id=" + $tag_id;
+		$tag_description = $tmodel->get_tag_description();
+		$tag_followers = $tmodel->get_tag_followers();
 		$this->load->model("Question_model");
-		$model= new Question_model;
-		$list_questions = $model->get_list_of_questions($tag_id);
+		$qmodel= new Question_model;
+		$list_questions = $qmodel->get_list_of_questions($tag_id);
 		$tag_data = array('tag_name'=>$tag_name,
 			'tag_id'=>$tag_id,
 			'tag_description'=>$tag_description,
 			'tag_followers'=>$tag_followers,
 			'list_questions'=>$list_questions);
 
-		$this->load->view("Tag_view",$tag_data);
+			$this->load->view("Tag_view",$tag_data);
 
 
 	}
+	*/
 //Question Detail Page __F
 
 	public function question_detail()
@@ -518,11 +537,7 @@ class Login extends CI_Controller {
 	}
 	else
 	{
-<<<<<<< HEAD
 		echo "Error in Answers reading detail";
-=======
-		echo "Error in Answers reading detail";	
->>>>>>> e09ec906c8a32d523b90a632e69e7db6c5cd6f2d
 	}
 	//$model->getUserModel();
 
@@ -549,6 +564,32 @@ class Login extends CI_Controller {
 	
 
 
+//Post Question
+
+	public function post_question_view()
+	{
+		$this->load->view('Post_question_view');
+	}
+
+	public function post_question()
+	{
+		
+		$question_title = $this->input->post('question_title');
+		$question_data = $this->input->post('question_data');
+		//$tags = $this->input->post('tag');
+		$tags = "Tobias,Dennis,Jerry,Jack";
+		$question_data = array(
+			'q_title'=>$question_title,
+			'q_data'=>$question_data,
+			'tag_name'=>$tags);
+		
+		echo $question_title;
+		$this->load->model('Post_question_model');
+		$pmodel = new Post_question_model;
+		$pmodel->insert_question_data($question_data);
+
+
+	}
 
 	//for loading homepage view
 	public function homepage()
@@ -575,4 +616,34 @@ class Login extends CI_Controller {
 	}
 
 
+<<<<<<< HEAD
+public function user_answered_questions()
+{
+	$this->load->model('Question_model');
+	$qmodel = new Question_model;
+	$list_of_answered_question = $qmodel->get_list_of_answered_question();
+
+	$no_of_question_answered = count($list_of_answered_question);
+	echo "No of Question answered=".$no_of_question_answered;
+	var_dump($list_of_answered_question);
 }
+
+
+
+public function user_asked_questions()
+{
+	$this->load->model('Question_model');
+	$qmodel = new Question_model;
+	$list_of_question_asked = $qmodel->get_list_of_question_asked();
+	var_dump($list_of_question_asked );
+	$user_name = $qmodel->get_current_user_name();
+	echo "user_name=".$user_name;
+	//echo "No of Question ansked=".$no_of_question_asked;
+
+}
+
+=======
+	/*Deleted Functions*/
+>>>>>>> 51851fc95977bac98c0625ac93cac66c4025a239
+}
+

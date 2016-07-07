@@ -630,5 +630,21 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		return 0;
 	}
 
+
+	public function get_question_title($val);
+	{
+		$query = "select q_title from question where q_title LIKE '".$val."' limit 0,10";
+		$execute = $this->db->query($query);
+		$row = $execute->row();
+
+		if($execute->num_rows()>0)
+		{
+			return $row;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }
 
