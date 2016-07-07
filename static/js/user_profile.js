@@ -17,6 +17,39 @@
 
 //var row_count=1;
 //Fade in dashboard box
+
+var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+function split( val ) {
+  return val.split( /,\s*/ );
+}
+function extractLast( term ) {
+  return split( term ).pop();
+}
+
+
 var question_page=1;
 
 
@@ -92,6 +125,20 @@ $(document).ready(function(){
     });
 
 
+
+    //to get tags to populate auto complete for the ask questions div
+    $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/return_tag_array",
+      type:"get",
+      dataType: "json",
+      success: function(response){
+       
+      console.log(response);
+       availableTags=response.set;
+       
+    }
+
+    });
     
 
     
@@ -103,6 +150,40 @@ $(document).ready(function(){
 //     .submit();
 // 	});
 
+
+
+//ask_question_autocomplete
+    $( "#ask_question_tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .bind( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( ($.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) )).slice(0, 10) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( "," );
+          return false;
+        }
+      });
 
 
 
@@ -252,3 +333,65 @@ function notification_click(clicked_id)
 
 
 }
+
+
+
+
+$("#ask_question_button").click(function(event) {
+  /* Act on the event */
+
+  var tags_csv=$("#ask_question_tags").val();
+  var tag_array = tags_csv.split(',');
+  var tag_formatted="'"+tag_array[0]+"'";
+  var limit=0;
+  if(tag_array.length <= 5)
+  {
+    
+    if(tag_array[tag_array.length-1]=="")
+    {
+      //console.log("last element null");
+      limit=tag_array.length-1;
+    }
+    else
+    {
+      //console.log("last element not null");
+      limit=tag_array.length;
+
+    }
+  }
+  else
+  {
+    limit=5;
+  }
+  for(i=1; i< limit; i++)
+  {
+    tag_formatted+=",'"+tag_array[i]+"'";
+
+  }
+
+  //console.log(tag_formatted);
+  var data={
+    title : $("#question_title").val(),
+    data : $("#question_detail").val(),
+    tags: tag_formatted
+  };
+
+
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/post_question",
+      data: data,
+      type:"post",
+      dataType: "json",
+      success: function(response){
+       
+         console.log(response.result);
+         alert("Question Posted!");
+         location.reload();
+
+        
+    }
+
+    });
+
+
+});

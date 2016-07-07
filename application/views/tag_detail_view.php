@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <title>Homepage|TAG</title>
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
     <style>
   /* Popover */
   .popover {
@@ -120,35 +121,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <button data-toggle="collapse" data-target="#ask_question_div" class="btn btn-primary" style="width:100%;"><span class="glyphicon glyphicon-envelope"></span>ASK a QUESTION</button>
     <div id="ask_question_div" class="collapse">
-      <form class="form-horizontal" role="form" action="http://www.askandanswer.com/index.php/login/login_call" method="post" id="ask_form">
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="question-title">Question Title:</label>
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="question_title" placeholder="Question Title">
+        <br>
+        <form class="form-horizontal" role="form" action="http://www.askandanswer.com/index.php/homepage/post_question" method="get" >
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="question-title">Question Title:</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="question_title" placeholder="Question Title">
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label col-sm-2" for="question_detail">Question Detail:</label>
-          <div class="col-sm-10">
-            <textarea class="form-control" rows="5" id="question_detail"></textarea>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="question_detail">Question Detail:</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" rows="5" id="question_detail"></textarea>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="question_tags">Select tags from list(ctrl+click):</label>
-          <select class="form-control" id="question_tags">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Submit</button>
+          <div class="form-group ui-widget">
+            <label class="control-label col-sm-2" for="ask_question_tags">Select tags from list:</label>
+            <div class="col-sm-10">
+              <input class="form-control" id="ask_question_tags">
+            </div>
           </div>
-        </div>
-      </form>
-    </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="button" class="btn btn-default" id="ask_question_button">Submit</button>
+            </div>
+          </div>
+        </form>
+        
+      </div>
     <br>
     <br>
     <br>
@@ -209,6 +209,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </ul>
 
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/js/tag_detail.js"></script>
     

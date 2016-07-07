@@ -379,6 +379,15 @@ public function check()
 			$user_profile_data['profile_pic_url']=$this->profile_url;
 			$query2="update user_profile set profile_pic_url='".$this->profile_url."' where user_name='".$user_profile_data['user_name']."'";
 			$this->db->query($query2);
+
+
+			//insert blank row in user interaction table
+			$insert_data=array('u_id'=> $row->u_id);
+			$this->db->insert('user_interaction_table', $insert_data);
+
+
+
+			
 			$this->setUserData($user_profile_data);
 
 			$url=$this->generate_activation_url();

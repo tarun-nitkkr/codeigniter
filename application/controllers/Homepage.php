@@ -273,7 +273,45 @@ class Homepage extends CI_Controller {
 		}
 
 	}
+
+
+	//return the array wth the tags
+	public function return_tag_array()
+	{
+		$this->load->model("tag_model");
+		$model=new tag_model;
+		$result= $model->get_tags_set();
+		echo json_encode($result);
+	}
 	
+
+	//to post question
+	public function post_question()
+	{
+		$title=$this->input->post('title');
+		$data=$this->input->post('data');
+		$tag_csv=$this->input->post('tags');
+		//echo $tag_csv;
+		$model=$this->getQuestionModel();
+
+		$user_data=$_SESSION['user_data'];
+		$question_data=array(
+			'q_data'=>$data,
+			'q_title' => $title,
+			'q_id' => $user_data['u_id'],
+			'tag_name'=> $tag_csv
+			);
+		//echo $question_data['tag_name'];
+		$result=$model->post_questionDB($question_data);
+		$response=array('result' => $result);
+
+		echo json_encode($response);
+
+		
+		
+
+	}
+
 
 
 }

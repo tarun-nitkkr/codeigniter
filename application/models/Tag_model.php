@@ -131,4 +131,57 @@
 				return 0;
 			}
 		}
+
+
+
+		//function to give a set of tags input in the db
+		public function get_tags_set()
+		{
+			$query="select name from tags";
+			$execute=$this->db->query($query);
+			//$tag_set=[]
+			if($execute->num_rows() > 0)
+			{
+				//echo "hello";
+				$tag_set=array();
+				$i=0;	
+				foreach ($execute->result() as $row) 
+				{
+					# code...
+				
+				
+				array_push($tag_set, $row->name);
+
+				$i++;
+
+				}
+				$result=array(
+
+				'set'=>$tag_set,
+				'no'=>$i
+				);
+				return $result;
+
+			}
+			//echo "hello3";
+			return 0;
+
+		}
+
+
+		public function get_tag_name($val);
+	{
+		$query = "select name from question where name LIKE '".$val."' limit 0,10";
+		$execute = $this->db->query($query);
+		$row = $execute->row();
+
+		if($execute->num_rows()>0)
+		{
+			return $row;
+		}
+		else
+		{
+			return 0;
+		}
 	}
+}

@@ -647,38 +647,38 @@ class Login extends CI_Controller {
 
 		// http://localhost:8983/solr/collection1/select?q=q_title%3A%22hendrerit+consectetuer%2C+cursus+et%2C+magna.+Praesent+interdum+ligula+eu%22&wt=json&indent=true
 
+		// $this->load->model('Question_model');
+		// $qmodel = new Question_model;
+		
 
-	//	$term = "hen";
-		$term = "Hamilton";
-		$url ="http://localhost:8983/solr/collection1/suggest?suggest=true&suggest.build=true&suggest.dictionary=mySuggester&wt=json&suggest.q=et";
-		// $url ="http://localhost:8983/solr/collection1/suggest?suggest=true&suggest.build=true&suggest.dictionary=mySuggester&wt=json&suggest.q='".$term."'";
+		// //Following is from Mysql
 
-		$json_data = file_get_contents($url);
-		$data = json_decode($json_data);
+		//  $search_term = $this->input->POST('term');
+		//  $result1= $qmodel->get_question_title($search_term);
 
-		//var_dump($data);
-		echo "<pre>";
-		print_r($data);
-		echo "</pre>";
+		//  $this->load->model('Tag_model');
+		//  $qmodel = new Tag_model;
+		//  $result2 = $qmodel->get_tag_name($search_term));
+
+
+		//  echo "result_question::";
+		//  echo "<pre>";
+		//  print_r($result1);
+		//  echo "</pre>";
+
+
+		//  echo "result_tag::";
+		//  echo "<pre>";
+		//  print_r($result1);
+		//  echo "</pre>";
+
+		//   print json_encode($result1.$result2);
+		
+
+	
+
+
 
 	}
 
 }
-
-
-
-		// if($search_result['0']=='user')
-		// {
-		// 	$this->load->model('User_model');
-		// 	$umodel = new User_model;
-		// 	$result=$umodel->direct_login($term);
-		// 	$this->load->view('User_profile',$result);
-		// }
-
-		// else if($search_result['0']=='java'|| $search_result['0']=='C'||$search_result['0']=='C++')
-		// {
-		// 	$this->load->model('Tag_model');
-		// 	$tmodel = new Tag_model;
-		// 	$result=$tmodel->get_tag_detail($term);
-		// 	$this->load->view('Tag_view',$result);
-		// } 

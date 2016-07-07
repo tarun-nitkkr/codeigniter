@@ -22,37 +22,34 @@ class Question_model extends CI_Model
 	
 
 
-	public function get_question_detail($q_id)
-	{
+	// public function get_question_detail($q_id)
+	// {
+	// 	$query = "select * from question where q_id =".$q_id;
+	// 	$execute = $this->db->query($query);
 
-		//using escaping to prevent  SQL injection
-		$query = "select * from question where q_id =".$this->db->escape($q_id);
-		
-		$execute = $this->db->query($query);
+	// 	if($execute->num_rows()>0)
+	// 	{
+	// 		$row=$execute->row();
+	// 	$q_data = array('u_id'=>$row->u_id,
+	// 	'q_title'=>$row->q_title,
+	// 	'q_data'=>$row->q_data,
+	// 	'no_of_likes'=>$row->no_of_likes,
+	// 	'q_create_date'=>$row->created_on,
+	// 	'q_modified_date'=>$row->last_modified,
+	// 	'q_num_answer'=>$row->no_of_answer
+	// 	);
 
-		if($execute->num_rows()>0)
-		{
-			$row=$execute->row();
-		$q_data = array('u_id'=>$row->u_id,
-		'q_title'=>$row->q_title,
-		'q_data'=>$row->q_data,
-		'no_of_likes'=>$row->no_of_likes,
-		'q_create_date'=>$row->created_on,
-		'q_modified_date'=>$row->last_modified,
-		'q_num_answer'=>$row->no_of_answer
-		);
+	// 	$this->set_question_data($q_data);
+	// 	return 1;
+	// 	}
 
-		$this->set_question_data($q_data);
-		return 1;
-		}
-
-		else
-		{
-			return 0;
-		}
+	// 	else
+	// 	{
+	// 		return 0;
+	// 	}
 
 
-	}
+	// }
 
 
 // Returning list of all the questions of a particular tag_id for Tags_detail page __F
@@ -329,9 +326,7 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 
 
 
-
-
-//function to update answer in the db
+	//function to update answer in the db
 	public function post_edited_answerDB($data)
 	{
 		
@@ -347,8 +342,10 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 	//function to post the answer into db
 	public function post_answerDB($data)
 	{
-		
+		//update question table
 		$query="update question set no_of_answer=no_of_answer+1 where q_id=".$data['q_id'];
+
+		
 		if($this->db->insert('answer',$data) && $this->db->query($query))
 		{
 			return 1;
@@ -356,8 +353,6 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 		return 0;
 
 	}
-
-
 
 
 //to get the list of all the users who answeres on that question
@@ -436,7 +431,7 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 	//function to increment no. of answered questions in user interaction table
 	public function increment_ans_user_interaction($u_id)
 	{
-		$query="update user_interaction_table set no_of_answer=no_of_answers+1 where u_id=".$u_id;
+		$query="update user_interaction_table set no_of_answers=no_of_answers+1 where u_id=".$u_id;
 		if($this->db->query($query))
 		{
 			return 1;
@@ -573,5 +568,83 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 	}
 
 
+
+	//to insert question in DB
+	public function post_questionDB($question_data)
+	{
+		
+		
+		$u_id = $question_data['q_id'];
+		$query_question = "insert into question(u_id,q_data,q_title) values('".$u_id."','".$question_data['q_data']."','".$question_data['q_title']."')";
+		$execute_question = $this->db->query($query_question);
+			
+		
+		$tag_name = $question_data['tag_name'];
+	
+		$query_get_q_id = "select q_id from question where u_id='".$u_id."' and q_data = '".$question_data['q_data']."' and q_title = '".$question_data['q_title']."'";
+		$execute = $this->db->query($query_get_q_id);
+		$row_q_id = $execute->row();
+
+
+		$query_tag = "select tag_id from tags where name IN (".$tag_name.")";
+		$execute = $this->db->query($query_tag);
+		//$row = $execute->row();
+		$value1 = "";
+		$value2 = "";
+		$query_user_tag_relation = "";
+		$flag = 0;
+		$executecheck = $execute->result();
+		foreach ($execute->result() as $row)
+		{
+			
+			if($flag == 0)
+			{
+				$value1 ="('".$u_id."','".$row->tag_id."')";
+				$value2 ="('".$row_q_id->q_id."','".$row->tag_id."')";
+				$flag = $flag+1;
+			}
+			else
+			{
+				$value1 .= ",('".$u_id."','".$row->tag_id."')";
+				$value2 .=",('".$row_q_id->q_id."','".$row->tag_id."')";
+			}
+		}
+		$query_insert_quest_tag = "insert into question_tag(q_id,tag_id) values".$value2."";
+		//$execute = $this->db->query($query_insert_quest_tag);
+		
+		
+		
+		$query_insert_user_tag_relation = "insert into user_tag_relation(u_id,tag_id) values".$value1."";
+		//$execute = $this->db->query($query_insert_user_tag_relation);
+
+		
+			 
+		$query_insert_user_interaction_table=" update user_interaction_table set no_of_questions=no_of_questions+1 where u_id=".$u_id;
+		//$execute = $this->db->query($query_insert_user_interaction_table);
+
+		if($this->db->query($query_insert_quest_tag) && $this->db->query($query_insert_user_tag_relation) && $this->db->query($query_insert_user_interaction_table))
+		{
+			//echo "Inserted Value1";
+			return 1;
+		}
+		return 0;
+	}
+
+
+	public function get_question_title($val);
+	{
+		$query = "select q_title from question where q_title LIKE '".$val."' limit 0,10";
+		$execute = $this->db->query($query);
+		$row = $execute->row();
+
+		if($execute->num_rows()>0)
+		{
+			return $row;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }
 
