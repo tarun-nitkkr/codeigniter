@@ -78,7 +78,7 @@ class Qdetail extends CI_Controller {
       		<div class="panel-heading" id="question_title"><h3>'.$data['title'].'</h3><a href="http://www.askandanswer.com/index.php/homepage/load_user_profile_view/'.$data['user_name'].'"><span class="badge">'.$data['user_name'].'</span></a></div>
       		<div class="panel-body" id="question_body">'.$data['data'].'</div>
     		</div>
-			<h3><a href="#answer_div"><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span></a><span class="label label-info" style="float:right;">Posted on<span class="badge">'.$data['created_on'].'</span></span></h3><br><br><h4>TAGS</h4><h4>';
+			<h3><a href="#answer_div"><span class="label label-success" style="float:left;">Answers<span class="badge">'.$data['no_ans'].'</span></span></a><span class="label label-info" style="float:right;">Posted on<span class="badge">'.date("g:i a F j, Y ",strtotime($data['created_on'])).'</span></span></h3><br><br><h4>TAGS</h4><h4>';
 		
 
 		$tag_csv=$data['tag_csv'];
@@ -139,14 +139,24 @@ class Qdetail extends CI_Controller {
 			);
 		
 		
-
-		//need a procedure to send notification email to the contributors of the question the question
-
-		//fetching the previous contributors
-		$result=$model->get_contributors($q_id);
-
-		//inserting the new answer in the DB
 		$flag=$model->post_answerDB($data);
+		//update user interaction table
+		$model->increment_ans_user_interaction($u_id);
+
+		$response=array('result'=>$flag);
+		echo json_encode($response);	
+
+		
+	}
+
+
+
+	//function to send mailers to the users who contributed to a question
+	public function contibutors_mailer()
+	{
+		$q_id=$_SESSION['q_id'];
+		$model=$this->getQuestionModel();
+		$result=$model->get_contributors($q_id);
 		$set=$result['set'];
 		$email_data=array(
 			'subject'=>'Activity on a Question answered by you',
@@ -184,13 +194,15 @@ class Qdetail extends CI_Controller {
 		$this->send_notification($email_data);
 
 
-		//update user interaction table
-		$model->increment_ans_user_interaction($u_id);
-
-		$response=array('result'=>$flag);
-		//procedure to update the notification table for contibutors
+		
+		$response=array('result'=>1);
 		echo json_encode($response);
+
+
 	}
+
+
+
 
 
 	//function to update edited answer

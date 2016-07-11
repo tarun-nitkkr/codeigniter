@@ -594,6 +594,38 @@ public function check()
 
 		
 	}
+
+
+
+
+	//function to check the value of isFirst
+	public function check_isFirst($u_id)
+	{
+		$query="select isfirst from user_profile where u_id=".$u_id;
+		$execute=$this->db->query($query);
+		if($execute->num_rows() >0)
+		{
+			$row=$execute->row();
+			$result=$row->isfirst;
+			return $result;
+		}
+		return -1;
+
+	}
+
+
+
+
+	//function to update the value of isFirst after the first successful login and selection of the usertags by the user
+	public function update_isfirst($u_id)
+	{
+		$query="update user_profile set isfirst=0 where u_id=".$u_id;
+		if($this->db->query($query))
+		{
+			return 1;
+		}
+		return 0;
+	}
 	
 }
 

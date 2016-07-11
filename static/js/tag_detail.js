@@ -196,6 +196,11 @@ function extractLast( term ) {
           // add placeholder to get the comma-and-space at the end
           terms.push( "" );
           this.value = terms.join( "," );
+          var index=availableTags.indexOf(""+ui.item.value);
+          if (index > -1) {
+              availableTags.splice(index, 1);
+              console.log(ui.item.value+" removed from autocomplete");
+          }
           return false;
         }
       });

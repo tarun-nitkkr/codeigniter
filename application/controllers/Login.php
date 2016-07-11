@@ -88,7 +88,16 @@ class Login extends CI_Controller {
 				$data=$model->getUserData();
 				$_SESSION['user_data']=$data;
 				//echo "direct login";
-				$this->load->view('homepage_view');	
+				$result=$model->check_isFirst($data['u_id']);
+				if($result==1)
+				{
+					$this->load->view('first_login_tag_view');
+				}
+				else
+				{
+					$this->load->view('homepage_view');	
+				}
+				
 			}
 			
 		}
@@ -517,98 +526,7 @@ class Login extends CI_Controller {
 
 	}
 	*/
-//Question Detail Page __F
-
-	public function question_detail()
-	{
-		$this->load->model('Question_model');
-		$qmodel = new Question_model;
-
-		//$q_id need to have
-		$q_id = 41;
-		$flag = $qmodel->get_question_detail($q_id);
-		if($flag)
-		{
-		$question_data= $qmodel->get_question_data();
-		// $q_title = $qmodel->get_question_title();
-		// $q_data = $qmodel->get_question_data();
-		// $no_of_likes = $qmodel->get_likes();
-		// $q_created_date = $qmodel->get_q_create_date();
-		// $q_modified_date = $qmodel->get_q_modified_date();
-	}
-	else
-	{
-		echo "Error in reading question details\n.";
-	}
-	$this->load->model('Answer_model');
-	$amodel = new Answer_model;
-
-	$flag = $amodel->get_answers($q_id);
-	if($flag)
-	{
-		// $a_id = $amodel->get_answer_id();
-		// $a_data = $amodel->get_answer_data();
-		// $a_upvotes = $amodel->get_answer_upvote();
-		// $a_created_date = $amodel->get_a_created_date();
-		// $a_modified_date = $amodel->get_a_modified_date();
-		// $u_id = $amodel->get_answers_user();
-		$answer_data = $amodel->get_answer_data();//ans[a_id][u_id][a_data][upvotes][c_date][m_date]
-	}
-	else
-	{
-		echo "Error in Answers reading detail";
-	}
-	//$model->getUserModel();
-
-	//$username = $model->getUsernameForQuestionPage($question_data['u_id']);
-	$num_of_answers =sizeof($answer_data);
-	 $this->load->model('user_model');
-	 $model = new User_model;
-	// echo "Question Id = "+$question_data['u_id'];
-	 $username = $model->getUsernameForQuestionPage($question_data['u_id']);
-	$q_data = array('q_id'=>$q_id,
-		'user_name'=>$username,
-		'u_id'=>$question_data['u_id'],
-		'q_title'=>$question_data['q_title'],
-		'q_data'=>$question_data['q_data'],
-		'no_of_likes'=>$question_data['no_of_likes'],
-		'q_create_date'=>$question_data['q_create_date'],
-		'q_modified_date'=>$question_data['q_modified_date'],
-		//'q_num_answer'=>$question_data['q_num_answer'],
-		'q_num_answer'=>$num_of_answers,
-		'answer_data'=>$answer_data);
-	$this->load->view('Question_view',$q_data);
-
-	}
-	
-
-
-//Post Question
-
-	public function post_question_view()
-	{
-		$this->load->view('Post_question_view');
-	}
-
-	public function post_question()
-	{
-		
-		$question_title = $this->input->post('question_title');
-		$question_data = $this->input->post('question_data');
-		//$tags = $this->input->post('tag');
-		$tags = "Tobias,Dennis,Jerry,Jack";
-		$question_data = array(
-			'q_title'=>$question_title,
-			'q_data'=>$question_data,
-			'tag_name'=>$tags);
-		
-		echo $question_title;
-		$this->load->model('Post_question_model');
-		$pmodel = new Post_question_model;
-		$pmodel->insert_question_data($question_data);
-
-
-	}
+	//deleted functions for posting questions 
 
 	//for loading homepage view
 	public function homepage()
@@ -641,8 +559,8 @@ class Login extends CI_Controller {
 
 	//Search function Implemented
 
-	public function search_input()
-	{
+	//public function search_input()
+	//{
 		// $term = $this->input->post('srch-term');
 		//  $this->load->model('Search_model');
 		// $smodel = new Search_model;
@@ -681,6 +599,15 @@ class Login extends CI_Controller {
 
 
 
+	//}
+
+
+
+
+	//temp function just for testing php version
+	public function temp()
+	{
+		$this->load->view('temp_view');
 	}
 
 }

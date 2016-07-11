@@ -10,42 +10,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <?php $data=$_SESSION['user_data']?>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css" />
-     <style>
-  /* Popover */
-  .popover {
-     /* position: absolute;
-      border: 2px black;
-      max-width: 600px;
-      left: 0;
-      right: 0;*/
-      top: 50px;
-      left: -15px;
-      display: block;
-      width: 300px;
-
-  }
-  .ui-autocomplete-highlight {
+    <style>
+    /* Popover */
+    .popover {
+    /* position: absolute;
+    border: 2px black;
+    max-width: 600px;
+    left: 0;
+    right: 0;*/
+    top: 50px;
+    left: -15px;
+    display: block;
+    width: 300px;
+    }
+    .ui-autocomplete-highlight {
     font-weight: bold;
-  }
-  
-  /*.popover-title {
-      background-color: #73AD21;
-      color: #FFFFFF;
-      font-size: 28px;
-      text-align:center;
-  }
-  
-  .popover-content {
-      background-color: coral;
-      color: #FFFFFF;
-      padding: 50px;
-  }*/
-  
-  .arrow {
-      /*border-right-color: red !important;*/
-      left: 24%;
-  }
-  </style>
+    }
+    
+    /*.popover-title {
+    background-color: #73AD21;
+    color: #FFFFFF;
+    font-size: 28px;
+    text-align:center;
+    }
+    
+    .popover-content {
+    background-color: coral;
+    color: #FFFFFF;
+    padding: 50px;
+    }*/
+    
+    .arrow {
+    /*border-right-color: red !important;*/
+    left: 24%;
+    }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -61,11 +60,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li></li> -->
           </ul>
           <div class="col-sm-3 col-md-3">
-            <form class="navbar-form" role="search" action="#">
+            <form class="navbar-form" id="search_form" role="search" action="#">
               <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
                 <div class="input-group-btn">
-                  <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                  <button class="btn btn-default" type="button" onclick="question_search();"><i class="glyphicon glyphicon-search"></i></button>
                 </div>
               </div>
             </form>
@@ -81,42 +80,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <br><br><br><br><br><br>
         <div class="row">
           <div class="col-sm-6" >
+            <div class="col-sm-3">
             <img src="/uploads/<?php echo $data['pic_url']?>.png" class="img-circle" alt="Cinque Terre" width="100" height="100">
           </div>
+          <div class="col-sm-6">
+            <h2>Welcome <?php echo $data['first_name']?> <?php echo $data['last_name']?></h2><p>My Email-ID:<?php echo $data['email_id']?></p>
+          </div>
+          </div>
           
-          <div id="firstname" class="col-sm-6" ><h2>Welcome <?php echo $data['first_name']?> <?php echo $data['last_name']?></h2>
+          <div id="firstname" class="col-sm-6">
+            <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/asked"<button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button></a>
+            <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/answered"<button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button></a>
+            <button data-toggle="collapse" type="button" data-target="#followed_tags_div"  class="btn btn-primary" width="100px">Followed Tags <a  id="followed_tags_tooltip" data-toggle="tooltip" title="Hooray!"><span class="badge" id="no_tag">10 </span></a></button>
+            <div id="followed_tags_div" class="collapse">
+              Hello
+            </div>
           </div>
           
           
         </div>
         
-        <div class="row">
-          <div class="col-sm-6" >
-            
-          </div>
-          
-          <div id="email_id" class="col-sm-3" ><p>My Email-ID:<?php echo $data['email_id']?></p>
-          
-        </div>
-        <div class="col-sm-3" >
-          <!-- <button id="logout_button" type="button" class="btn btn-info"><a href="http://www.askandanswer.com/index.php/login/logout">Logout</a></button> -->
-        </div>
-        
-        
       </div>
+      <br>
+      <br>
+      <br>
+      <br>
       
-      
-      <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/asked"<button type="button" class="btn btn-primary" width="100px">Asked Questions <span class="badge" id="no_ques">10 </span></button></a>
-      <a href="http://www.askandanswer.com/index.php/homepage/load_user_specific_question_view/answered"<button type="button" class="btn btn-primary" width="100px">Total Answers <span class="badge" id="no_ans">20 </span></button></a>
-      <button data-toggle="collapse" type="button" data-target="#followed_tags_div"  class="btn btn-primary" width="100px">Followed Tags <a  id="followed_tags_tooltip" data-toggle="tooltip" title="Hooray!"><span class="badge" id="no_tag">10 </span></a></button>
-      <div id="followed_tags_div" class="collapse">
-        Hello
-      </div>
-    </div>
-      <br>
-      <br>
-      <br>
-      <br>
       <button data-toggle="collapse" data-target="#ask_question_div" class="btn btn-primary" style="width:100%;">ASK a QUESTION <span class="glyphicon glyphicon-envelope"></span></button>
       
       

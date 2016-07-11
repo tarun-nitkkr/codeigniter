@@ -189,6 +189,13 @@ $(document).ready(function(){
           // add placeholder to get the comma-and-space at the end
           terms.push( "" );
           this.value = terms.join( "," );
+
+          var index=availableTags.indexOf(""+ui.item.value);
+          if (index > -1) {
+              availableTags.splice(index, 1);
+              console.log(ui.item.value+" removed from autocomplete");
+          }
+
           return false;
         }
       });
@@ -516,3 +523,36 @@ $("#ask_question_button").click(function(event) {
 
 
 });
+
+
+
+
+
+
+//to search the questions
+function question_search()
+{
+  var term= $("#srch-term").val();
+  var data={
+    term: term
+  };
+
+
+
+  $.ajax({
+      url: "http://www.askandanswer.com/index.php/homepage/solr_search",
+      data: data,
+      type:"get",
+      dataType: "html",
+      success: function(response){
+       
+         console.log(response);
+
+        $("#question_div").html("<table>"+response+"</table>");
+        //$("#recent_tab").attr('class', 'active');
+        //$("#followed_tab").attr('class', '');
+    }
+
+    });
+
+}

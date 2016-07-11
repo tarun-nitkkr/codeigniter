@@ -254,6 +254,11 @@ function extractLast( term ) {
           // add placeholder to get the comma-and-space at the end
           terms.push( "" );
           this.value = terms.join( "," );
+          var index=availableTags.indexOf(""+ui.item.value);
+          if (index > -1) {
+              availableTags.splice(index, 1);
+              console.log(ui.item.value+" removed from autocomplete");
+          }
           return false;
         }
       });
@@ -289,7 +294,7 @@ function submit_answer()
   var data={
     a_data: answer_data
   };
-  var flag;
+  var flag=0;
   $.ajax({
       url: "http://www.askandanswer.com/index.php/qdetail/post_answer",
       data: data,
@@ -297,7 +302,7 @@ function submit_answer()
       dataType: "json",
       success: function(response){
        
-         console.log(response.result);
+         //console.log(response.result);
 
           $.ajax({
             url: "http://www.askandanswer.com/index.php/qdetail/load_answers",
@@ -306,6 +311,7 @@ function submit_answer()
             success: function(response){
              
                console.log(response);
+               flag=1;
 
               $("#answer_div").html("<table>"+response+"</table>");
               //$("#question_div").empty().append('<tr id"row_1"><div class="panel panel-default"><div class="panel-heading" id="row_header_1">Panel heading</div><div class="panel-body" id="row_body_1">Panel Content</div><div class="panel-footer" id="row_footer_1">Panel Footer</div></div></tr>');
@@ -322,9 +328,27 @@ function submit_answer()
 
     });
 
+  if(flag)
+  {
+    $.ajax({
+            url: "http://www.askandanswer.com/index.php/qdetail/contibutors_mailer",
+            type:"get",
+            dataType: "html",
+            success: function(response){
+             
+               console.log(response);
 
+              
+          }
+
+    });
+
+  }
+  
 
 }
+
+
 
 
 function edit_answer_model()

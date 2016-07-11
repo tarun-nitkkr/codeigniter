@@ -53,7 +53,6 @@ class Question_model extends CI_Model
 
 
 // Returning list of all the questions of a particular tag_id for Tags_detail page __F
-
 	public function get_list_of_questions($tag_id, $from)
 	{
 		$query="SELECT UP.user_name,Q.q_id, GROUP_CONCAT(QT.tag_id) ,Q.q_title, GROUP_CONCAT(T.name) as tag_name, Q.no_of_answer, Q.no_of_likes, Q.created_on  FROM question Q JOIN question_tag QT ON QT.q_id=Q.q_id 
@@ -631,20 +630,64 @@ GROUP BY Q.q_id, Q.q_data, Q.q_title, Q.no_of_answer, Q.no_of_answer, Q.no_of_li
 	}
 
 
-	public function get_question_title($val);
-	{
-		$query = "select q_title from question where q_title LIKE '".$val."' limit 0,10";
-		$execute = $this->db->query($query);
-		$row = $execute->row();
+	// public function get_question_title($val);
+	// {
+	// 	$query = "select q_title from question where q_title LIKE '".$val."' limit 0,10";
+	// 	$execute = $this->db->query($query);
+	// 	$row = $execute->row();
 
-		if($execute->num_rows()>0)
+	// 	if($execute->num_rows()>0)
+	// 	{
+	// 		return $row;
+	// 	}
+	// 	else
+	// 	{
+	// 		return 0;
+	// 	}
+	// }
+
+
+
+
+	//function to update user_tag followed relation for the first login
+	public function update_user_tagDB($data)
+	{
+		
+		$tags=$data['tags'];
+		$u_id=$data['u_id'];
+		$query_tag = "select tag_id from tags where name IN (".$tags.")";
+		$execute = $this->db->query($query_tag);
+		
+		$value1 = "";
+		
+		$query_user_tag_relation = "";
+		$flag = 0;
+		$executecheck = $execute->result();
+		foreach ($execute->result() as $row)
 		{
-			return $row;
+			
+			if($flag == 0)
+			{
+				$value1 ="('".$u_id."','".$row->tag_id."')";
+				
+				$flag = $flag+1;
+			}
+			else
+			{
+				$value1 .= ",('".$u_id."','".$row->tag_id."')";
+				
+			}
 		}
-		else
+
+		$query_insert_user_tag_relation = "insert into user_tag_relation(u_id,tag_id) values".$value1."";
+		//$execute = $this->db->query($query_insert_user_tag_relation);
+
+		if($this->db->query($query_insert_user_tag_relation))
 		{
-			return 0;
+			
+			return 1;
 		}
+		return 0;
 	}
 }
 
